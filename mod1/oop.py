@@ -36,3 +36,25 @@ brahmesh_tea = Tea("MILK", True, True, False, "Grande")
 basant_tea = Tea("LEMON", True, False, False, "Venti")
 print(brahmesh_tea.tea_type)
 print(basant_tea.tea_type)
+
+
+####### JAVA
+# public static void main(String[] args) {
+# //        I need to create an object of Tea
+# //        In Java, if we want to create an object of a class, we use "new <ClassName>()"
+
+#         Tea brahmeshTea = new Tea(
+#                 "MILK",
+#                 true,
+#                 true,
+#                 false,
+#                 "Grande");
+
+#         Tea basantTea = new Tea(
+#                 "LEMON",
+#                 true,
+#                 false,
+#                 false);
+
+#         System.out.println(brahmeshTea.teaType);
+#     }
