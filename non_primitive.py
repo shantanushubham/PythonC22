@@ -26,3 +26,27 @@
 # M213   0         1 2 3 4 5   6       7 8    9
 # RAM   [10, M2139][][][][][][2, M2130][][][15, null]
 #                               ll   
+
+# 3. String -> Ultimately, a string is a character array.
+# A string is immutable.
+# first_name = "Shantan" -> ['S']['h']['a']['n']['t']['a']['n']
+#                                    
+# last_name = "Shubham" -> ['S']['h']['u']['b']['h']['a']['m']
+#                                       ln
+# first_name = first_name + 'u' -> ['u'] | ['S']['h']['a']['n']['t']['a']['n']['u']
+#                                                       fn
+
+
+# 4. Stack -> LIFO (Last In First Out)
+# Start: [1][4]
+
+# 5. Queue -> FIFO (First In First Out)
+# Start: [2][3][4] :End
+
+
+# 6. Set -> A set is like a list, but it cannot contain duplicates.
+# set -> [1,1,1,2,2,2,2] -> [1,2]
+
+
+# In Python -> Array + LinkedList + Stack + Queue = All are represented by something called as a list.
+
