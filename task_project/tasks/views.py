@@ -5,6 +5,8 @@ from rest_framework.decorators import api_view
 from rest_framework.request import Request
 from rest_framework.response import Response
 
+from tasks.models import User
+from tasks.serializers import LoginSerializer, UserSerializer
 from tasks.services.json_util import read_json, write_json
 
 USERS = "users.json"
@@ -18,27 +20,28 @@ TASKS = "tasks.json"
 # List All Users
 @api_view(["GET"])
 def users(request: Request) -> Response:
-    users = read_json(USERS)
-    return Response(users)
+
+    # SELECT * FROM users
+    users = User.objects.all()
+
+    outgoing_data = UserSerializer(users, many=True).data
+    return Response(data=outgoing_data, status=200)
 
 
 # Get User by User Id
 @api_view(["GET"])
 def user_detail(request: Request, user_id: int) -> Response:
-    users = read_json(USERS)
 
-    user = None
-    for u in users:
-        if u["id"] == user_id:
-            user = u
-            break
-
-    if user is None:
+    # SELECT * FROM users WHERE id=<user-id>
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
         return Response(
             {"error": f"User with id: {user_id} was not found."},
             status=status.HTTP_404_NOT_FOUND,
         )
 
+    user = UserSerializer(user).data
     return Response(user)
 
 
@@ -63,68 +66,46 @@ def user_tasks(request: Request, user_id: int) -> Response:
 # Create a new User.
 @api_view(["POST"])
 def create_user(request) -> Response:
-    users: list = read_json(USERS)
+    serializer = UserSerializer(data=request.data)
 
-    username = request.data.get("username")
-    email = request.data.get("email")
+    if not serializer.is_valid():
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    if not username or not email:
-        return Response(
-            {"error": "username and email are required fields"},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
+    validated_data = serializer.validated_data
 
-    user_name_set: set[str] = set()
-    email_set: set[str] = set()
+    # Save Data
+    # INSERT INTO users VALUES (1, 'shantanu', 'shantanu@example.com', 'Shantanu Shubham')
+    created_user = User.objects.create(
+        username=validated_data["username"],
+        email=validated_data["email"],
+        name=validated_data["name"],
+    )
 
-    max_id = 0
-    for u in users:
-        max_id = max(max_id, u["id"])
-        user_name_set.add(u["username"])
-        email_set.add(u["email"])
-
-    if username in user_name_set:
-        return Response(
-            {"error": f"{username} is already taken."},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
-
-    if email in email_set:
-        return Response(
-            {"error": f"{email} is already taken."}, status=status.HTTP_400_BAD_REQUEST
-        )
-
-    new_id = max_id + 1
-
-    created_user = {"id": new_id, "username": username, "email": email}
-
-    users.append(created_user)
-
-    write_json(USERS, users)
-
-    return Response(created_user, status=status.HTTP_201_CREATED)
+    # Return the outgoing data using a serializer
+    outgoing_data = UserSerializer(created_user).data
+    return Response(data=outgoing_data, status=status.HTTP_201_CREATED)
 
 
 # Login using username only.
 @api_view(["POST"])
 def login(request) -> Response:
-    username = request.data.get("username")
 
-    if not username:
+    serializer = LoginSerializer(data=request.data)
+
+    if not serializer.is_valid():
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    username = serializer.validated_data["username"]
+
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
         return Response(
-            {"error": "username is required"},
-            status=status.HTTP_400_BAD_REQUEST,
+            {"error": f"User '{username}' was not found."},
+            status=status.HTTP_404_NOT_FOUND,
         )
 
-    users = read_json(USERS)
-    for u in users:
-        if u["username"] == username:
-            return Response(u)
-
-    return Response(
-        {"error": f"User '{username}' was not found."},
-        status=status.HTTP_404_NOT_FOUND,
-    )
+    return Response(UserSerializer(user).data)
 
 
 #  -------------
@@ -285,7 +266,5 @@ def delete_task(request, task_id: int) -> Response:
     write_json(TASKS, tasks)
 
     return Response(
-        {"message": f"Task with id: {task_id} was deleted."},
-        status=status.HTTP_200_OK,
+        {"message": f"Task with id: {task_id} was deleted."}, status=status.HTTP_200_OK
     )
-
