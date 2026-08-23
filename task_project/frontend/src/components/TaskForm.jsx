@@ -9,12 +9,7 @@ const emptyForm = {
 
 function toInputDate(value) {
   if (!value) return ''
-  return value.slice(0, 16)
-}
-
-function toApiDate(value) {
-  if (!value) return null
-  return `${value}:00Z`
+  return value.slice(0, 10)
 }
 
 export default function TaskForm({ task, onSubmit, onCancel }) {
@@ -46,7 +41,7 @@ export default function TaskForm({ task, onSubmit, onCancel }) {
     onSubmit({
       title: form.title.trim(),
       description: form.description.trim(),
-      due_date: toApiDate(form.due_date),
+      due_date: form.due_date,
       completed: form.completed,
     })
   }
@@ -72,17 +67,19 @@ export default function TaskForm({ task, onSubmit, onCancel }) {
         name="description"
         value={form.description}
         onChange={handleChange}
-        placeholder="Optional details"
+        placeholder="Task details"
         rows={3}
+        required
       />
 
       <label htmlFor="due_date">Due date</label>
       <input
         id="due_date"
         name="due_date"
-        type="datetime-local"
+        type="date"
         value={form.due_date}
         onChange={handleChange}
+        required
       />
 
       <label className="checkbox-row">

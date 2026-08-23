@@ -3,6 +3,7 @@ import {
   createTask,
   deleteTask,
   getUserTasks,
+  patchTask,
   updateTask,
 } from '../api'
 import { useAuth } from '../context/AuthContext'
@@ -10,6 +11,9 @@ import TaskForm from './TaskForm'
 
 function formatDate(value) {
   if (!value) return 'No due date'
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return new Date(`${value}T00:00:00`).toLocaleDateString()
+  }
   return new Date(value).toLocaleString()
 }
 
@@ -39,13 +43,13 @@ export default function TaskDashboard() {
   }, [loadTasks])
 
   async function handleCreate(payload) {
-    await createTask({ ...payload, user_id: user.id })
+    await createTask({ ...payload, user: user.id })
     setShowForm(false)
     await loadTasks()
   }
 
   async function handleUpdate(payload) {
-    await updateTask(editingTask.id, { ...payload, user_id: user.id })
+    await updateTask(editingTask.id, { ...payload, user: user.id })
     setEditingTask(null)
     await loadTasks()
   }
@@ -57,13 +61,7 @@ export default function TaskDashboard() {
   }
 
   async function handleToggleComplete(task) {
-    await updateTask(task.id, {
-      user_id: user.id,
-      title: task.title,
-      description: task.description,
-      due_date: task.due_date,
-      completed: !task.completed,
-    })
+    await patchTask(task.id, { completed: !task.completed })
     await loadTasks()
   }
 

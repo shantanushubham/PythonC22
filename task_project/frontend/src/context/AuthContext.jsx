@@ -36,11 +36,11 @@ export function AuthProvider({ children }) {
     }
   }
 
-  async function register(username, email) {
+  async function register(username, email, name) {
     setLoading(true)
     setError('')
     try {
-      const newUser = await createUserRequest({ username, email })
+      const newUser = await createUserRequest({ username, email, name })
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newUser))
       setUser(newUser)
       return newUser

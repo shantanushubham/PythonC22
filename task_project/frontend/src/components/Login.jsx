@@ -6,11 +6,12 @@ export default function Login() {
   const [mode, setMode] = useState('login')
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
 
   const isLogin = mode === 'login'
   const canSubmit = isLogin
     ? username.trim()
-    : username.trim() && email.trim()
+    : username.trim() && email.trim() && name.trim()
 
   async function handleSubmit(event) {
     event.preventDefault()
@@ -19,7 +20,7 @@ export default function Login() {
     if (isLogin) {
       await login(username.trim())
     } else {
-      await register(username.trim(), email.trim())
+      await register(username.trim(), email.trim(), name.trim())
     }
   }
 
@@ -27,6 +28,7 @@ export default function Login() {
     setMode(nextMode)
     setUsername('')
     setEmail('')
+    setName('')
     clearError()
   }
 
@@ -55,6 +57,17 @@ export default function Login() {
 
         {!isLogin && (
           <>
+            <label htmlFor="name">Name</label>
+            <input
+              id="name"
+              type="text"
+              placeholder="Your name"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              autoComplete="name"
+              disabled={loading}
+            />
+
             <label htmlFor="email">Email</label>
             <input
               id="email"
