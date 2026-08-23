@@ -1,4 +1,3 @@
-from ast import mod
 from django.db import models
 
 
@@ -25,3 +24,6 @@ class Task(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     due_date = models.DateField()
+
+    class Meta:
+        indexes = [models.Index(fields=["description"])]
