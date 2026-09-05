@@ -1,3 +1,4 @@
+from typing import cast, override
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
@@ -8,6 +9,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from tasks.models import Task, User
 from tasks.serializers import LoginSerializer, TaskSerializer, UserSerializer
+from tasks.utils import BCryptUtil, JwtUtil
 
 #  -------------
 #  USERS
@@ -60,16 +62,22 @@ class LoginView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         username = serializer.validated_data["username"]
+        password = serializer.validated_data["password"]
 
         try:
             user = User.objects.get(username=username)
+            if not BCryptUtil.validate_password(user.password, password):
+                return Response(
+                    {"error": f"Incorrect Password"}, status=status.HTTP_404_NOT_FOUND
+                )
         except User.DoesNotExist:
             return Response(
                 {"error": f"User '{username}' was not found."},
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        return Response(UserSerializer(user).data)
+        access_token = JwtUtil.create_access_token(user.id, user.role)
+        return Response({"access_token": access_token, "token_type": "Bearer"})
 
 
 class TaskPagination(PageNumberPagination):
@@ -80,7 +88,7 @@ class TaskPagination(PageNumberPagination):
 
 class TaskViewSet(ModelViewSet):
 
-    queryset = Task.objects.all()
+    # queryset = Task.objects.filter(user = 1)
     serializer_class = TaskSerializer
     pagination_class = TaskPagination
 
@@ -91,3 +99,19 @@ class TaskViewSet(ModelViewSet):
     ordering_fields = ["title", "created_at", "updated_at", "due_date"]
 
     ordering = ["-created_at"]
+
+    @override
+    def get_queryset(self):
+        user = cast(User, self.request.user)
+        if user.role == User.Role.ADMIN:
+            return Task.objects.all()
+        return Task.objects.filter(user=user)
+
+    @override
+    def perform_create(self, serializer) -> None:
+        serializer.save(user=self.request.user)
+
+    # Using this as a dummy implementation to verify the token
+    @action(detail=False, methods=["GET"], url_path="test")
+    def test_function(self, request: Request) -> Response:
+        return Response(UserSerializer(request.user).data)
