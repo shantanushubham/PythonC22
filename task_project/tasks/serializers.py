@@ -1,6 +1,7 @@
 from typing import override
 from rest_framework import serializers
 
+from tasks.context import require_current_user
 from tasks.models import Task, User
 from tasks.utils import BCryptUtil
 
@@ -41,3 +42,7 @@ class TaskSerializer(serializers.ModelSerializer):
             "due_date",
         ]
         read_only_fields = ["id", "created_at", "updated_at", "user"]
+
+    @override
+    def create(self, validated_data):
+        return Task.objects.create(user=require_current_user(), **validated_data)

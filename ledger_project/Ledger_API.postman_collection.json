@@ -1,0 +1,549 @@
+{
+  "info": {
+    "name": "Ledger API",
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "description": "Postman collection for the Ledger Project Django REST API.\n\n**Base URL:** `{{base_url}}` (default: `http://localhost:8000`)\n\n**Auth flow:**\n1. Call **Login** — `access` and `refresh` tokens are auto-saved to collection variables.\n2. All protected endpoints automatically use the `access` token via the collection-level Bearer auth.\n3. Use **Refresh Token** to get a new access token when it expires.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string",
+      "description": "Base URL of the Django dev server"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string",
+      "description": "JWT access token — auto-filled after Login"
+    },
+    {
+      "key": "refresh_token",
+      "value": "",
+      "type": "string",
+      "description": "JWT refresh token — auto-filled after Login"
+    },
+    {
+      "key": "user_id",
+      "value": "1",
+      "type": "string",
+      "description": "Target user ID for single-user endpoints"
+    },
+    {
+      "key": "wallet_id",
+      "value": "1",
+      "type": "string",
+      "description": "Target wallet ID for single-wallet endpoints"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "description": "Authentication endpoints — login and token refresh.",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const body = pm.response.json();",
+                  "    pm.collectionVariables.set('access_token', body.access);",
+                  "    pm.collectionVariables.set('refresh_token', body.refresh);",
+                  "    console.log('Tokens saved to collection variables.');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone_number\": \"9999999999\",\n  \"password\": \"yourpassword\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login", ""]
+            },
+            "description": "Authenticate with phone number and password.\n\nReturns a JWT `access` token (short-lived) and a `refresh` token (long-lived). Both are automatically saved to collection variables."
+          },
+          "response": [
+            {
+              "name": "200 OK — Tokens returned",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_number\": \"9999999999\",\n  \"password\": \"yourpassword\"\n}"
+                },
+                "url": { "raw": "{{base_url}}/api/auth/login/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"access\": \"<jwt_access_token>\",\n  \"refresh\": \"<jwt_refresh_token>\"\n}"
+            },
+            {
+              "name": "400 Bad Request — Invalid credentials",
+              "status": "Bad Request",
+              "code": 400,
+              "originalRequest": {
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_number\": \"9999999999\",\n  \"password\": \"wrongpassword\"\n}"
+                },
+                "url": { "raw": "{{base_url}}/api/auth/login/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"non_field_errors\": [\"Invalid Credentials\"]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const body = pm.response.json();",
+                  "    pm.collectionVariables.set('access_token', body.access);",
+                  "    console.log('New access token saved.');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/refresh/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "refresh", ""]
+            },
+            "description": "Use the `refresh` token to get a new `access` token without logging in again.\n\nThe new access token is auto-saved to the `access_token` collection variable."
+          },
+          "response": [
+            {
+              "name": "200 OK — New access token",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"refresh\": \"<refresh_token>\"\n}"
+                },
+                "url": { "raw": "{{base_url}}/api/auth/refresh/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"access\": \"<new_jwt_access_token>\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "description": "User management endpoints.\n\n- Regular users can only see/edit their own account.\n- Staff users can see and manage all accounts.\n- Wallet is auto-created on signup.",
+      "item": [
+        {
+          "name": "Sign Up (Create User)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const body = pm.response.json();",
+                  "    pm.collectionVariables.set('user_id', String(body.id));",
+                  "    console.log('user_id saved:', body.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone_number\": \"9999999999\",\n  \"password\": \"yourpassword\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", ""]
+            },
+            "description": "Register a new user.\n\nCreates the user and automatically provisions an empty wallet for them. Returns the new user's `id` and `phone_number`.\n\n**No auth required.**"
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "status": "Created",
+              "code": 201,
+              "originalRequest": {
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_number\": \"9999999999\",\n  \"password\": \"yourpassword\"\n}"
+                },
+                "url": { "raw": "{{base_url}}/api/users/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": 1,\n  \"phone_number\": \"9999999999\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", ""]
+            },
+            "description": "List users.\n\n- Regular users see only their own profile.\n- Staff users see all users.\n\n**Requires Bearer token.**"
+          },
+          "response": [
+            {
+              "name": "200 OK — User list",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "method": "GET",
+                "url": { "raw": "{{base_url}}/api/users/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "[\n  {\n    \"id\": 1,\n    \"phone_number\": \"9999999999\",\n    \"password\": \"<hashed>\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Retrieve User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users/{{user_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "{{user_id}}", ""]
+            },
+            "description": "Retrieve a single user by ID.\n\n**Requires Bearer token.** Regular users can only retrieve their own profile."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "method": "GET",
+                "url": { "raw": "{{base_url}}/api/users/1/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": 1,\n  \"phone_number\": \"9999999999\",\n  \"password\": \"<hashed>\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update User (Full)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone_number\": \"8888888888\",\n  \"password\": \"newpassword\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/{{user_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "{{user_id}}", ""]
+            },
+            "description": "Full update of a user. All fields are required.\n\n**Requires Bearer token.**"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_number\": \"8888888888\",\n  \"password\": \"newpassword\"\n}"
+                },
+                "url": { "raw": "{{base_url}}/api/users/1/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": 1,\n  \"phone_number\": \"8888888888\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update User (Partial)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone_number\": \"7777777777\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/{{user_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "{{user_id}}", ""]
+            },
+            "description": "Partially update a user. Only send the fields you want to change.\n\n**Requires Bearer token.**"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_number\": \"7777777777\"\n}"
+                },
+                "url": { "raw": "{{base_url}}/api/users/1/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": 1,\n  \"phone_number\": \"7777777777\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users/{{user_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "{{user_id}}", ""]
+            },
+            "description": "Delete a user by ID.\n\n**Requires Bearer token.** Regular users can only delete their own account."
+          },
+          "response": [
+            {
+              "name": "204 No Content",
+              "status": "No Content",
+              "code": 204,
+              "originalRequest": {
+                "method": "DELETE",
+                "url": { "raw": "{{base_url}}/api/users/1/" }
+              },
+              "header": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Wallets",
+      "description": "Wallet management endpoints.\n\n- Wallets are **auto-created** when a user signs up — you cannot POST to create one manually.\n- Regular users can only see and update their own wallet.\n- Staff users can manage all wallets (currently same as regular; see commented-out code).\n\n**All endpoints require Bearer token.**",
+      "item": [
+        {
+          "name": "List Wallets",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/wallets/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "wallets", ""]
+            },
+            "description": "List wallets belonging to the authenticated user.\n\n**Requires Bearer token.**"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "method": "GET",
+                "url": { "raw": "{{base_url}}/api/wallets/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "[\n  {\n    \"id\": 1,\n    \"user\": 1,\n    \"balance\": \"0.00\",\n    \"created_at\": \"2026-09-12T13:00:00Z\",\n    \"updated_at\": \"2026-09-12T13:00:00Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Retrieve Wallet",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/wallets/{{wallet_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "wallets", "{{wallet_id}}", ""]
+            },
+            "description": "Retrieve a single wallet by ID.\n\n**Requires Bearer token.** Users can only access their own wallet."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "method": "GET",
+                "url": { "raw": "{{base_url}}/api/wallets/1/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": 1,\n  \"user\": 1,\n  \"balance\": \"150.00\",\n  \"created_at\": \"2026-09-12T13:00:00Z\",\n  \"updated_at\": \"2026-09-12T14:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Wallet (Full)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"balance\": \"250.00\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/wallets/{{wallet_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "wallets", "{{wallet_id}}", ""]
+            },
+            "description": "Full update of a wallet.\n\nNote: `id`, `user`, `created_at`, and `updated_at` are read-only and will be ignored if sent.\n\n**Requires Bearer token.**"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"balance\": \"250.00\"\n}"
+                },
+                "url": { "raw": "{{base_url}}/api/wallets/1/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": 1,\n  \"user\": 1,\n  \"balance\": \"250.00\",\n  \"created_at\": \"2026-09-12T13:00:00Z\",\n  \"updated_at\": \"2026-09-12T15:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Wallet (Partial)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"balance\": \"500.00\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/wallets/{{wallet_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "wallets", "{{wallet_id}}", ""]
+            },
+            "description": "Partially update a wallet. Only send the fields to update.\n\nCurrently only `balance` is writable.\n\n**Requires Bearer token.**"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"balance\": \"500.00\"\n}"
+                },
+                "url": { "raw": "{{base_url}}/api/wallets/1/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": 1,\n  \"user\": 1,\n  \"balance\": \"500.00\",\n  \"created_at\": \"2026-09-12T13:00:00Z\",\n  \"updated_at\": \"2026-09-12T16:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete Wallet",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/wallets/{{wallet_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "wallets", "{{wallet_id}}", ""]
+            },
+            "description": "Delete a wallet by ID.\n\n**Requires Bearer token.**"
+          },
+          "response": [
+            {
+              "name": "204 No Content",
+              "status": "No Content",
+              "code": 204,
+              "originalRequest": {
+                "method": "DELETE",
+                "url": { "raw": "{{base_url}}/api/wallets/1/" }
+              },
+              "header": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

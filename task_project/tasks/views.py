@@ -1,4 +1,4 @@
-from typing import cast, override
+from typing import override
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
+from tasks.context import require_current_user
 from tasks.models import Task, User
 from tasks.serializers import LoginSerializer, TaskSerializer, UserSerializer
 from tasks.utils import BCryptUtil, JwtUtil
@@ -33,16 +34,16 @@ class UserViewSet(ModelViewSet):
 
     @override
     def get_queryset(self):
-        user = cast(User, self.request.user)
+        user = require_current_user()
         if user.role == User.Role.ADMIN:
-            return Task.objects.all()
-        return Task.objects.filter(user=user)
+            return User.objects.all()
+        return User.objects.filter(pk=user.pk)
 
     # Fetch By Username - GET username/<username>
     @action(detail=False, methods=["GET"], url_path=r"username/(?P<username>[\w.@+-]+)")
     def by_username(self, request: Request, username: str) -> Response:
         try:
-            user = User.objects.get(username=username)
+            user = self.get_queryset().get(username=username)
         except User.DoesNotExist:
             return Response(
                 {"error": f"User with username: {username} doesn't exist."},
@@ -109,16 +110,12 @@ class TaskViewSet(ModelViewSet):
 
     @override
     def get_queryset(self):
-        user = cast(User, self.request.user)
+        user = require_current_user()
         if user.role == User.Role.ADMIN:
             return Task.objects.all()
         return Task.objects.filter(user=user)
 
-    @override
-    def perform_create(self, serializer) -> None:
-        serializer.save(user=self.request.user)
-
     # Using this as a dummy implementation to verify the token
     @action(detail=False, methods=["GET"], url_path="test")
     def test_function(self, request: Request) -> Response:
-        return Response(UserSerializer(request.user).data)
+        return Response(UserSerializer(require_current_user()).data)

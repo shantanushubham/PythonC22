@@ -3,6 +3,7 @@ from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.request import Request
 
+from tasks.context import set_current_user
 from tasks.models import User
 from tasks.utils import JwtUtil
 
@@ -14,6 +15,7 @@ class JwtAuthentication(BaseAuthentication):
         auth_header = request.headers.get("Authorization")
 
         if not auth_header:
+            set_current_user(None)
             return None
 
         try:
@@ -38,4 +40,5 @@ class JwtAuthentication(BaseAuthentication):
                 "User associated with this token does not exist."
             )
 
+        set_current_user(user)
         return user, token
