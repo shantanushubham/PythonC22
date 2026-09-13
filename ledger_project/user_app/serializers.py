@@ -21,6 +21,29 @@ class UserSignUpSerializer(serializers.ModelSerializer):
         return user
 
 
+class UserSerializer(serializers.ModelSerializer):
+    """Used for PUT / PATCH on an existing user. Password is optional; when
+    provided it is always hashed via set_password."""
+
+    class Meta:
+        model = User
+        fields = ["id", "phone_number", "password", "first_name", "last_name", "email"]
+        extra_kwargs = {
+            "password": {"write_only": True, "required": False},
+            "phone_number": {"required": False},
+        }
+
+    # Model present in DB is instance
+    def update(self, instance, validated_data):
+        password = validated_data.pop("password", None)
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        if password:
+            instance.set_password(password)
+        instance.save()
+        return instance
+
+
 class LoginSerializer(serializers.Serializer):
     phone_number = serializers.CharField()
     password = serializers.CharField(write_only=True)

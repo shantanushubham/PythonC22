@@ -9,7 +9,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from user_app.context import require_current_user
 from user_app.models import User
-from user_app.serializers import LoginSerializer, UserSignUpSerializer
+from user_app.serializers import LoginSerializer, UserSerializer, UserSignUpSerializer
 from wallet_app.models import Wallet
 
 
@@ -17,6 +17,12 @@ class UserViewSet(ModelViewSet):
 
     queryset = User.objects.all()
     serializer_class = UserSignUpSerializer
+
+    @override
+    def get_serializer_class(self):
+        if self.action in ("update", "partial_update"):
+            return UserSerializer
+        return UserSignUpSerializer
 
     @override
     def get_queryset(self):

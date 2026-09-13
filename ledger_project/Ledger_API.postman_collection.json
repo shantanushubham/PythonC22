@@ -31,10 +31,28 @@
       "description": "Target user ID for single-user endpoints"
     },
     {
-      "key": "wallet_id",
+      "key": "bank_account_id",
       "value": "1",
       "type": "string",
-      "description": "Target wallet ID for single-wallet endpoints"
+      "description": "Target bank account ID for single-bank-account endpoints"
+    },
+    {
+      "key": "txn_id",
+      "value": "",
+      "type": "string",
+      "description": "UUID of a transaction — auto-filled after Create Txn"
+    },
+    {
+      "key": "sender_wallet_id",
+      "value": "1",
+      "type": "string",
+      "description": "Wallet ID to use as sender_wallet when creating a txn"
+    },
+    {
+      "key": "receiver_wallet_id",
+      "value": "2",
+      "type": "string",
+      "description": "Wallet ID to use as receiver_wallet when creating a txn"
     }
   ],
   "auth": {
@@ -302,7 +320,7 @@
               "host": ["{{base_url}}"],
               "path": ["api", "users", "{{user_id}}", ""]
             },
-            "description": "Full update of a user. All fields are required.\n\n**Requires Bearer token.**"
+            "description": "Full update of a user via `UserUpdateSerializer`. `password` is optional — when provided it is re-hashed via `set_password`.\n\n**Requires Bearer token.**"
           },
           "response": [
             {
@@ -388,20 +406,20 @@
       ]
     },
     {
-      "name": "Wallets",
-      "description": "Wallet management endpoints.\n\n- Wallets are **auto-created** when a user signs up — you cannot POST to create one manually.\n- Regular users can only see and update their own wallet.\n- Staff users can manage all wallets (currently same as regular; see commented-out code).\n\n**All endpoints require Bearer token.**",
+      "name": "Wallet",
+      "description": "Wallet endpoint.\n\n- Wallets are **auto-created** when a user signs up.\n- Read-only — there is exactly one wallet per user, and balance changes only happen as a side effect of transactions (see the **Txns** folder), never via direct wallet writes.\n\n**Requires Bearer token.**",
       "item": [
         {
-          "name": "List Wallets",
+          "name": "Get My Wallet",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/api/wallets/",
+              "raw": "{{base_url}}/api/wallet/",
               "host": ["{{base_url}}"],
-              "path": ["api", "wallets", ""]
+              "path": ["api", "wallet", ""]
             },
-            "description": "List wallets belonging to the authenticated user.\n\n**Requires Bearer token.**"
+            "description": "Returns the wallet belonging to the currently logged-in user. No ID needed — the wallet is resolved from the JWT.\n\n**Requires Bearer token.**"
           },
           "response": [
             {
@@ -410,41 +428,125 @@
               "code": 200,
               "originalRequest": {
                 "method": "GET",
-                "url": { "raw": "{{base_url}}/api/wallets/" }
-              },
-              "header": [{ "key": "Content-Type", "value": "application/json" }],
-              "body": "[\n  {\n    \"id\": 1,\n    \"user\": 1,\n    \"balance\": \"0.00\",\n    \"created_at\": \"2026-09-12T13:00:00Z\",\n    \"updated_at\": \"2026-09-12T13:00:00Z\"\n  }\n]"
-            }
-          ]
-        },
-        {
-          "name": "Retrieve Wallet",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/wallets/{{wallet_id}}/",
-              "host": ["{{base_url}}"],
-              "path": ["api", "wallets", "{{wallet_id}}", ""]
-            },
-            "description": "Retrieve a single wallet by ID.\n\n**Requires Bearer token.** Users can only access their own wallet."
-          },
-          "response": [
-            {
-              "name": "200 OK",
-              "status": "OK",
-              "code": 200,
-              "originalRequest": {
-                "method": "GET",
-                "url": { "raw": "{{base_url}}/api/wallets/1/" }
+                "url": { "raw": "{{base_url}}/api/wallet/" }
               },
               "header": [{ "key": "Content-Type", "value": "application/json" }],
               "body": "{\n  \"id\": 1,\n  \"user\": 1,\n  \"balance\": \"150.00\",\n  \"created_at\": \"2026-09-12T13:00:00Z\",\n  \"updated_at\": \"2026-09-12T14:00:00Z\"\n}"
             }
           ]
+        }
+      ]
+    },
+    {
+      "name": "Bank Accounts",
+      "description": "Bank account CRUD for the logged-in user.\n\n- A user can link many bank accounts.\n- `user` is set automatically from the JWT — never send it in the body.\n- All actions are scoped to the logged-in user's own accounts.\n\n**All endpoints require Bearer token.**",
+      "item": [
+        {
+          "name": "List Bank Accounts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/bank-accounts/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "bank-accounts", ""]
+            },
+            "description": "List all bank accounts belonging to the authenticated user."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "method": "GET",
+                "url": { "raw": "{{base_url}}/api/bank-accounts/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "[\n  {\n    \"id\": 1,\n    \"user\": 1,\n    \"account_no\": \"123456789012\",\n    \"ifsc_code\": \"HDFC0001234\",\n    \"account_name\": \"Jane Doe\",\n    \"bank_name\": \"HDFC Bank\",\n    \"is_active\": true,\n    \"created_at\": \"2026-09-13T10:00:00Z\",\n    \"updated_at\": \"2026-09-13T10:00:00Z\"\n  }\n]"
+            }
+          ]
         },
         {
-          "name": "Update Wallet (Full)",
+          "name": "Add Bank Account",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const body = pm.response.json();",
+                  "    pm.collectionVariables.set('bank_account_id', String(body.id));",
+                  "    console.log('bank_account_id saved:', body.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"account_no\": \"123456789012\",\n  \"ifsc_code\": \"HDFC0001234\",\n  \"account_name\": \"Jane Doe\",\n  \"bank_name\": \"HDFC Bank\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/bank-accounts/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "bank-accounts", ""]
+            },
+            "description": "Link a new bank account to the logged-in user. `user` is attached automatically."
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "status": "Created",
+              "code": 201,
+              "originalRequest": {
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_no\": \"123456789012\",\n  \"ifsc_code\": \"HDFC0001234\",\n  \"account_name\": \"Jane Doe\",\n  \"bank_name\": \"HDFC Bank\"\n}"
+                },
+                "url": { "raw": "{{base_url}}/api/bank-accounts/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": 1,\n  \"user\": 1,\n  \"account_no\": \"123456789012\",\n  \"ifsc_code\": \"HDFC0001234\",\n  \"account_name\": \"Jane Doe\",\n  \"bank_name\": \"HDFC Bank\",\n  \"is_active\": true,\n  \"created_at\": \"2026-09-13T10:00:00Z\",\n  \"updated_at\": \"2026-09-13T10:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Retrieve Bank Account",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/bank-accounts/{{bank_account_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "bank-accounts", "{{bank_account_id}}", ""]
+            },
+            "description": "Retrieve a single bank account by ID. Users can only access their own accounts."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "method": "GET",
+                "url": { "raw": "{{base_url}}/api/bank-accounts/1/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": 1,\n  \"user\": 1,\n  \"account_no\": \"123456789012\",\n  \"ifsc_code\": \"HDFC0001234\",\n  \"account_name\": \"Jane Doe\",\n  \"bank_name\": \"HDFC Bank\",\n  \"is_active\": true,\n  \"created_at\": \"2026-09-13T10:00:00Z\",\n  \"updated_at\": \"2026-09-13T10:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Bank Account (Full)",
           "request": {
             "method": "PUT",
             "header": [
@@ -452,15 +554,15 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"balance\": \"250.00\"\n}",
+              "raw": "{\n  \"account_no\": \"123456789012\",\n  \"ifsc_code\": \"HDFC0005678\",\n  \"account_name\": \"Jane A. Doe\",\n  \"bank_name\": \"HDFC Bank\",\n  \"is_active\": true\n}",
               "options": { "raw": { "language": "json" } }
             },
             "url": {
-              "raw": "{{base_url}}/api/wallets/{{wallet_id}}/",
+              "raw": "{{base_url}}/api/bank-accounts/{{bank_account_id}}/",
               "host": ["{{base_url}}"],
-              "path": ["api", "wallets", "{{wallet_id}}", ""]
+              "path": ["api", "bank-accounts", "{{bank_account_id}}", ""]
             },
-            "description": "Full update of a wallet.\n\nNote: `id`, `user`, `created_at`, and `updated_at` are read-only and will be ignored if sent.\n\n**Requires Bearer token.**"
+            "description": "Full update of a bank account. All writable fields are required."
           },
           "response": [
             {
@@ -471,17 +573,17 @@
                 "method": "PUT",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"balance\": \"250.00\"\n}"
+                  "raw": "{\n  \"account_no\": \"123456789012\",\n  \"ifsc_code\": \"HDFC0005678\",\n  \"account_name\": \"Jane A. Doe\",\n  \"bank_name\": \"HDFC Bank\",\n  \"is_active\": true\n}"
                 },
-                "url": { "raw": "{{base_url}}/api/wallets/1/" }
+                "url": { "raw": "{{base_url}}/api/bank-accounts/1/" }
               },
               "header": [{ "key": "Content-Type", "value": "application/json" }],
-              "body": "{\n  \"id\": 1,\n  \"user\": 1,\n  \"balance\": \"250.00\",\n  \"created_at\": \"2026-09-12T13:00:00Z\",\n  \"updated_at\": \"2026-09-12T15:00:00Z\"\n}"
+              "body": "{\n  \"id\": 1,\n  \"user\": 1,\n  \"account_no\": \"123456789012\",\n  \"ifsc_code\": \"HDFC0005678\",\n  \"account_name\": \"Jane A. Doe\",\n  \"bank_name\": \"HDFC Bank\",\n  \"is_active\": true,\n  \"created_at\": \"2026-09-13T10:00:00Z\",\n  \"updated_at\": \"2026-09-13T11:00:00Z\"\n}"
             }
           ]
         },
         {
-          "name": "Update Wallet (Partial)",
+          "name": "Update Bank Account (Partial)",
           "request": {
             "method": "PATCH",
             "header": [
@@ -489,15 +591,15 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"balance\": \"500.00\"\n}",
+              "raw": "{\n  \"is_active\": false\n}",
               "options": { "raw": { "language": "json" } }
             },
             "url": {
-              "raw": "{{base_url}}/api/wallets/{{wallet_id}}/",
+              "raw": "{{base_url}}/api/bank-accounts/{{bank_account_id}}/",
               "host": ["{{base_url}}"],
-              "path": ["api", "wallets", "{{wallet_id}}", ""]
+              "path": ["api", "bank-accounts", "{{bank_account_id}}", ""]
             },
-            "description": "Partially update a wallet. Only send the fields to update.\n\nCurrently only `balance` is writable.\n\n**Requires Bearer token.**"
+            "description": "Partially update a bank account. Only send the fields you want to change."
           },
           "response": [
             {
@@ -508,26 +610,26 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"balance\": \"500.00\"\n}"
+                  "raw": "{\n  \"is_active\": false\n}"
                 },
-                "url": { "raw": "{{base_url}}/api/wallets/1/" }
+                "url": { "raw": "{{base_url}}/api/bank-accounts/1/" }
               },
               "header": [{ "key": "Content-Type", "value": "application/json" }],
-              "body": "{\n  \"id\": 1,\n  \"user\": 1,\n  \"balance\": \"500.00\",\n  \"created_at\": \"2026-09-12T13:00:00Z\",\n  \"updated_at\": \"2026-09-12T16:00:00Z\"\n}"
+              "body": "{\n  \"id\": 1,\n  \"user\": 1,\n  \"account_no\": \"123456789012\",\n  \"ifsc_code\": \"HDFC0005678\",\n  \"account_name\": \"Jane A. Doe\",\n  \"bank_name\": \"HDFC Bank\",\n  \"is_active\": false,\n  \"created_at\": \"2026-09-13T10:00:00Z\",\n  \"updated_at\": \"2026-09-13T12:00:00Z\"\n}"
             }
           ]
         },
         {
-          "name": "Delete Wallet",
+          "name": "Delete Bank Account",
           "request": {
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/api/wallets/{{wallet_id}}/",
+              "raw": "{{base_url}}/api/bank-accounts/{{bank_account_id}}/",
               "host": ["{{base_url}}"],
-              "path": ["api", "wallets", "{{wallet_id}}", ""]
+              "path": ["api", "bank-accounts", "{{bank_account_id}}", ""]
             },
-            "description": "Delete a wallet by ID.\n\n**Requires Bearer token.**"
+            "description": "Delete a bank account by ID."
           },
           "response": [
             {
@@ -536,10 +638,209 @@
               "code": 204,
               "originalRequest": {
                 "method": "DELETE",
-                "url": { "raw": "{{base_url}}/api/wallets/1/" }
+                "url": { "raw": "{{base_url}}/api/bank-accounts/1/" }
               },
               "header": [],
               "body": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Txns",
+      "description": "Wallet transactions.\n\n- Transactions are **immutable** once created — no update or delete endpoints.\n- `id` is a UUID.\n- Exactly one of `sender_wallet` / `receiver_wallet` may be null:\n  - Load money (bank → wallet): `sender_wallet` = null, `receiver_wallet` = your wallet.\n  - Send money to bank (wallet → bank): `sender_wallet` = your wallet, `receiver_wallet` = null.\n  - Wallet → wallet transfer: both set.\n- On create, the sender's balance is checked and debited, and the receiver's balance is credited, atomically. If `sender_wallet` doesn't have sufficient balance, the request fails with 400 and nothing is changed.\n\n**All endpoints require Bearer token.**",
+      "item": [
+        {
+          "name": "List My Txns",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/txns/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "txns", ""]
+            },
+            "description": "List all transactions where the logged-in user's wallet is the sender OR the receiver."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "method": "GET",
+                "url": { "raw": "{{base_url}}/api/txns/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "[\n  {\n    \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"amount\": \"100.00\",\n    \"sender_wallet\": 1,\n    \"receiver_wallet\": 2,\n    \"is_success\": true,\n    \"created_at\": \"2026-09-13T18:00:00Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Create Txn — Wallet to Wallet",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const body = pm.response.json();",
+                  "    pm.collectionVariables.set('txn_id', body.id);",
+                  "    console.log('txn_id saved:', body.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"100.00\",\n  \"sender_wallet\": {{sender_wallet_id}},\n  \"receiver_wallet\": {{receiver_wallet_id}}\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/txns/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "txns", ""]
+            },
+            "description": "Transfer money from one wallet to another. Both `sender_wallet` and `receiver_wallet` are set.\n\nFails with 400 if `sender_wallet` has insufficient balance."
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "status": "Created",
+              "code": 201,
+              "originalRequest": {
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": \"100.00\",\n  \"sender_wallet\": 1,\n  \"receiver_wallet\": 2\n}"
+                },
+                "url": { "raw": "{{base_url}}/api/txns/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"amount\": \"100.00\",\n  \"sender_wallet\": 1,\n  \"receiver_wallet\": 2,\n  \"is_success\": true,\n  \"created_at\": \"2026-09-13T18:00:00Z\"\n}"
+            },
+            {
+              "name": "400 Bad Request — Insufficient balance",
+              "status": "Bad Request",
+              "code": 400,
+              "originalRequest": {
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": \"999999.00\",\n  \"sender_wallet\": 1,\n  \"receiver_wallet\": 2\n}"
+                },
+                "url": { "raw": "{{base_url}}/api/txns/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"non_field_errors\": [\"sender_wallet does not have sufficient balance for this transaction.\"]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Txn — Load Money (Bank to Wallet)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"500.00\",\n  \"receiver_wallet\": {{sender_wallet_id}}\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/txns/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "txns", ""]
+            },
+            "description": "Load money into a wallet from a bank account. `sender_wallet` is omitted/null; `receiver_wallet` is credited. No balance check needed since there's no sender wallet."
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "status": "Created",
+              "code": 201,
+              "originalRequest": {
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": \"500.00\",\n  \"receiver_wallet\": 1\n}"
+                },
+                "url": { "raw": "{{base_url}}/api/txns/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": \"5b1c2e2a-1a2b-4c3d-9e8f-1234567890ab\",\n  \"amount\": \"500.00\",\n  \"sender_wallet\": null,\n  \"receiver_wallet\": 1,\n  \"is_success\": true,\n  \"created_at\": \"2026-09-13T18:05:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Txn — Send to Bank (Wallet to Bank)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"200.00\",\n  \"sender_wallet\": {{sender_wallet_id}}\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/txns/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "txns", ""]
+            },
+            "description": "Send money out of a wallet to the user's own bank account. `receiver_wallet` is omitted/null; `sender_wallet` is debited after a balance check."
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "status": "Created",
+              "code": 201,
+              "originalRequest": {
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": \"200.00\",\n  \"sender_wallet\": 1\n}"
+                },
+                "url": { "raw": "{{base_url}}/api/txns/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": \"7c2d3f3b-2b3c-4d4e-8f9a-234567890abc\",\n  \"amount\": \"200.00\",\n  \"sender_wallet\": 1,\n  \"receiver_wallet\": null,\n  \"is_success\": true,\n  \"created_at\": \"2026-09-13T18:10:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Retrieve Txn",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/txns/{{txn_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "txns", "{{txn_id}}", ""]
+            },
+            "description": "Retrieve a single transaction by its UUID. Only visible if the logged-in user's wallet is the sender or receiver."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "method": "GET",
+                "url": { "raw": "{{base_url}}/api/txns/3fa85f64-5717-4562-b3fc-2c963f66afa6/" }
+              },
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"amount\": \"100.00\",\n  \"sender_wallet\": 1,\n  \"receiver_wallet\": 2,\n  \"is_success\": true,\n  \"created_at\": \"2026-09-13T18:00:00Z\"\n}"
             }
           ]
         }

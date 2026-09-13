@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     "rest_framework",
     "user_app",
     "wallet_app",
+    "bank_account_app",
+    "txn_app",
+    "bank_txn_app",
     "rest_framework_simplejwt.token_blacklist",
 ]
 
