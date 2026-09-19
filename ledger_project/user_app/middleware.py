@@ -1,4 +1,8 @@
+import logging
+
 from user_app.context import reset_current_user, set_current_user
+
+logger = logging.getLogger(__name__)
 
 
 class CurrentUserMiddleware:
@@ -18,6 +22,11 @@ class CurrentUserMiddleware:
 
     def __call__(self, request):
         token = set_current_user(None)
+        logger.debug(
+            "class=CurrentUserMiddleware op=__call__ message=reset current user "
+            "path=%s method=%s",
+            request.path, request.method,
+        )
         try:
             return self.get_response(request)
         finally:

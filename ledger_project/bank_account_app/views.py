@@ -1,3 +1,4 @@
+import logging
 from typing import override
 
 from rest_framework import status
@@ -9,6 +10,8 @@ from user_app.context import require_current_user
 
 from .models import BankAccount
 from .serializers import BankAccountSerializer
+
+logger = logging.getLogger(__name__)
 
 
 class BankAccountViewSet(ModelViewSet):
@@ -29,12 +32,20 @@ class BankAccountViewSet(ModelViewSet):
     @override
     def get_queryset(self):
         user = require_current_user()
+        logger.info(
+            "class=BankAccountViewSet op=get_queryset message=listing bank accounts user_id=%s",
+            user.id,
+        )
         return BankAccount.objects.filter(user=user)
 
     @override
     def perform_create(self, serializer) -> None:
         """Attach the logged-in user automatically on creation."""
         user = require_current_user()
+        logger.info(
+            "class=BankAccountViewSet op=perform_create message=creating bank account user_id=%s",
+            user.id,
+        )
         serializer.save(user=user)
 
     @override
@@ -42,4 +53,8 @@ class BankAccountViewSet(ModelViewSet):
         instance = self.get_object()
         setattr(instance, "is_active", False)
         instance.save()
+        logger.info(
+            "class=BankAccountViewSet op=destroy message=deactivated bank account bank_account_id=%s",
+            instance.id,
+        )
         return Response(status=status.HTTP_204_NO_CONTENT)

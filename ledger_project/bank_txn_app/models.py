@@ -26,11 +26,12 @@ class BankTxn(models.Model):
         BankAccount, on_delete=models.PROTECT, related_name="bank_txns"
     )
 
-    # Populated once the payment-gateway call is actually wired up.
     gateway_reference_id = models.CharField(max_length=64, null=True, blank=True)
     status = models.CharField(
         max_length=10, choices=Status.choices, default=Status.PENDING
     )
+    # Populated from the gateway's `failureReason` when status is FAILED.
+    failure_reason = models.CharField(max_length=255, null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

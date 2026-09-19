@@ -11,4 +11,5 @@ dependencies = [
     "djangorestframework-simplejwt>=5.5.1",
     "psycopg[binary]>=3.3.5",
     "pyjwt>=2.13.0",
+    "requests>=2.34.2",
 ]

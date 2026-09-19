@@ -1,7 +1,11 @@
+import logging
+
 from rest_framework.request import Request
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from user_app.context import set_current_user
+
+logger = logging.getLogger(__name__)
 
 
 class ContextAwareJWTAuthentication(JWTAuthentication):
@@ -26,4 +30,9 @@ class ContextAwareJWTAuthentication(JWTAuthentication):
         if result is not None:
             user, _ = result
             set_current_user(user)
+            logger.info(
+                "class=ContextAwareJWTAuthentication op=authenticate message=user authenticated "
+                "user_id=%s",
+                user.id,
+            )
         return result

@@ -1,3 +1,4 @@
+import logging
 from contextvars import ContextVar, Token
 
 from rest_framework.exceptions import AuthenticationFailed
@@ -7,6 +8,8 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from user_app.models import User
+
+logger = logging.getLogger(__name__)
 
 # Stores the authenticated User for the current request context.
 # Each thread (WSGI) or asyncio Task (ASGI) gets its own isolated value,
@@ -23,6 +26,9 @@ def get_current_user() -> "User | None":
 def require_current_user() -> "User":
     user = get_current_user()
     if user is None:
+        logger.warning(
+            "func=require_current_user message=no user in current context"
+        )
         raise AuthenticationFailed("Authentication credentials were not provided.")
     return user
 

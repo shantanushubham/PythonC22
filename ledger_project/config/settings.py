@@ -152,3 +152,34 @@ SIMPLE_JWT = {
     
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
+
+# Base URL of the payment-gateway service used by bank_txn_app to actually
+# move money in/out of a bank account for load/withdraw transactions.
+PAYMENT_GATEWAY_BASE_URL = "http://localhost:3000"
+
+# Logging
+# https://docs.djangoproject.com/en/6.1/topics/logging/
+#
+# All app loggers (created via logging.getLogger(__name__)) propagate up to
+# the root logger, which prints INFO and above to the console. This makes
+# the structured "class=... op=... message=..." logs added throughout the
+# apps visible when running the dev server / management commands.
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "%(asctime)s %(levelname)s %(name)s %(message)s",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
+}

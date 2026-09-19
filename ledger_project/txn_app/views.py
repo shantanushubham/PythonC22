@@ -1,3 +1,5 @@
+import logging
+
 from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet
 
@@ -5,6 +7,8 @@ from user_app.context import require_current_user
 
 from .models import Txn
 from .serializers import TxnSerializer
+
+logger = logging.getLogger(__name__)
 
 
 class TxnViewSet(
@@ -28,6 +32,10 @@ class TxnViewSet(
     def get_queryset(self):
         user = require_current_user()
         wallet = user.wallet  # OneToOne reverse — raises RelatedObjectDoesNotExist if missing
+        logger.info(
+            "class=TxnViewSet op=get_queryset message=listing txns user_id=%s wallet_id=%s",
+            user.id, wallet.id,
+        )
         return Txn.objects.filter(
             sender_wallet=wallet
         ) | Txn.objects.filter(receiver_wallet=wallet)
