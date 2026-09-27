@@ -183,3 +183,8 @@ LOGGING = {
         "level": "INFO",
     },
 }
+
+# Celery
+
+# Broker URL for Celery to use Redis as the message broker.
+CELERY_BROKER_URL = "redis://localhost:6379/0"

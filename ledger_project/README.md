@@ -75,11 +75,13 @@ uv sync
 
 This creates `.venv` and installs Django, DRF, psycopg, bcrypt, and PyJWT from `pyproject.toml`.
 
-### 2. Start PostgreSQL
+### 2. Start PostgreSQL and Redis
 
 ```bash
 docker compose up -d
 ```
+
+Redis is the Celery broker (`redis://localhost:6379/0`).
 
 
 | Setting         | Value                   |
@@ -88,6 +90,7 @@ docker compose up -d
 | Database        | `ledgerdb`              |
 | User / password | `postgres` / `postgres` |
 | Port            | `5432`                  |
+| Redis           | `localhost:6379`        |
 
 
 Django uses the same values in `config/settings.py`. Check the container:
@@ -121,21 +124,34 @@ uv run manage.py runserver
 | [http://127.0.0.1:8000/api/](http://127.0.0.1:8000/api/)     | `user_app` API |
 
 
-Stop the server with `Ctrl + C`. Stop the database with `docker compose stop`.
+Stop the server with `Ctrl + C`. Stop Postgres and Redis with `docker compose stop`.
+
+### 6. Run the Celery worker
+
+Leave the Django server running and start the worker in a second terminal, from this folder:
+
+```bash
+uv run celery -A config worker --loglevel=INFO -P=solo
+```
+
+`-A config` loads the Celery app in `config/celery.py`. The app package is `config`, not `project`. `-P=solo` runs tasks in the worker process (one at a time), which is the pool to use on macOS.
+
+Stop the worker with `Ctrl + C`.
 
 ---
 
 ## Common commands
 
 
-| Task                      | Command                            |
-| ------------------------- | ---------------------------------- |
+| Task                      | Command                                          |
+| ------------------------- | ------------------------------------------------ |
 | Add a package             | `uv add <package>`                 |
 | Create an app             | `uv run manage.py startapp <name>` |
 | Make migrations           | `uv run manage.py makemigrations`  |
 | Apply migrations          | `uv run manage.py migrate`         |
 | Open a Django shell       | `uv run manage.py shell`           |
-| Stop Postgres             | `docker compose stop`              |
+| Start Celery worker       | `uv run celery -A config worker --loglevel=INFO -P=solo` |
+| Stop Postgres and Redis   | `docker compose stop`              |
 | Stop and remove container | `docker compose down`              |
 | Wipe DB volume            | `docker compose down -v`           |
 

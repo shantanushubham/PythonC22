@@ -11,6 +11,8 @@ from wallet_app.models import Wallet
 
 from .models import Txn
 
+from .tasks import send_notification_sms, send_notification_email
+
 logger = logging.getLogger(__name__)
 
 
@@ -20,9 +22,7 @@ class TxnSerializer(serializers.ModelSerializer):
     # bank leg (i.e. sender_wallet or receiver_wallet is null) — that's when
     # a BankTxn record needs to be created against a specific bank account.
     bank_account = serializers.PrimaryKeyRelatedField(
-        queryset=BankAccount.objects.all(),
-        write_only=True,
-        required=False,
+        queryset=BankAccount.objects.all(), write_only=True, required=False
     )
 
     class Meta:
@@ -64,7 +64,8 @@ class TxnSerializer(serializers.ModelSerializer):
         amount = attrs.get("amount", 0)
         if amount <= 0:
             logger.info(
-                "class=TxnSerializer op=validate message=amount is not positive amount=%s", amount
+                "class=TxnSerializer op=validate message=amount is not positive amount=%s",
+                amount,
             )
             raise serializers.ValidationError("amount must be greater than 0.")
 
@@ -72,7 +73,9 @@ class TxnSerializer(serializers.ModelSerializer):
             logger.warning(
                 "class=TxnSerializer op=validate message=insufficient balance "
                 "sender_id=%s balance=%s amount=%s",
-                sender.id, sender.balance, amount,
+                sender.id,
+                sender.balance,
+                amount,
             )
             raise serializers.ValidationError(
                 "sender_wallet does not have sufficient balance for this transaction."
@@ -120,7 +123,9 @@ class TxnSerializer(serializers.ModelSerializer):
             logger.info(
                 "class=TxnSerializer op=create message=calling payment gateway "
                 "bank_account_id=%s type=%s amount=%s",
-                bank_account.id, transaction_type, amount,
+                bank_account.id,
+                transaction_type,
+                amount,
             )
             try:
                 gateway_data = create_bank_transaction(
@@ -135,9 +140,12 @@ class TxnSerializer(serializers.ModelSerializer):
                 logger.error(
                     "class=TxnSerializer op=create message=payment gateway error "
                     "bank_account_id=%s error=%s",
-                    bank_account.id, exc,
+                    bank_account.id,
+                    exc,
                 )
-                raise serializers.ValidationError(f"Payment gateway error: {exc}") from exc
+                raise serializers.ValidationError(
+                    f"Payment gateway error: {exc}"
+                ) from exc
 
         # 200 (SUCCESS) and 402 (bank-declined FAILED) are both legitimate
         # completed gateway calls — is_success reflects the actual outcome.
@@ -171,9 +179,18 @@ class TxnSerializer(serializers.ModelSerializer):
 
         logger.info(
             "class=TxnSerializer op=create message=txn created txn_id=%s is_success=%s amount=%s",
-            txn.id, gateway_success, amount,
+            txn.id,
+            gateway_success,
+            amount,
+        )
+        send_notification_sms.delay(
+            sender.user.phone_number, f"Transaction successful for amount {amount}"
+        )
+        send_notification_email.delay(
+            sender.user.email, f"Transaction successful for amount {amount}"
         )
         return txn
+
 
 # Create Txn
 # Debit Money from Sender - SUCCESS | 1000 -> 500
