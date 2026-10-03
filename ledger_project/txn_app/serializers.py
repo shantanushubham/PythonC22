@@ -11,7 +11,11 @@ from wallet_app.models import Wallet
 
 from .models import Txn
 
-from .tasks import send_notification_sms, send_notification_email
+from .tasks import (
+    send_notification_sms,
+    send_notification_email,
+    send_transaction_notification,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -183,11 +187,16 @@ class TxnSerializer(serializers.ModelSerializer):
             gateway_success,
             amount,
         )
-        send_notification_sms.delay(
-            sender.user.phone_number, f"Transaction successful for amount {amount}"
-        )
-        send_notification_email.delay(
-            sender.user.email, f"Transaction successful for amount {amount}"
+        # send_notification_sms.delay(
+        #     sender.user.phone_number, f"Transaction successful for amount {amount}"
+        # )
+        # send_notification_email.delay(
+        #     sender.user.email, f"Transaction successful for amount {amount}"
+        # )
+        send_transaction_notification.delay(
+            sender.user.phone_number,
+            sender.user.email,
+            f"Transaction successful for amount {amount}",
         )
         return txn
 

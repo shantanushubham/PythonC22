@@ -23,8 +23,8 @@ import logging
 from decimal import Decimal
 from typing import Any
 
-import requests
 from django.conf import settings
+from httpx import AsyncClient
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +38,7 @@ class PaymentGatewayError(Exception):
     """
 
 
-def create_bank_transaction(
+async def create_bank_transaction(
     *,
     account_no: str,
     ifsc_code: str,
@@ -74,8 +74,11 @@ def create_bank_transaction(
     )
 
     try:
-        response = requests.post(url, json=payload, timeout=10)
-    except requests.RequestException as exc:
+        # `await` suspends this coroutine while waiting on the gateway, so the
+        # event loop can serve other requests in the meantime.
+        async with AsyncClient() as client:
+            response = await client.post(url, json=payload, timeout=10)
+    except httpx.RequestError as exc:  # connect errors, timeouts, etc.
         logger.error(
             "func=create_bank_transaction message=could not reach payment gateway error=%s", exc
         )
