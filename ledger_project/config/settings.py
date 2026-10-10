@@ -127,6 +127,13 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+# Project-level folder holding static files (served by the dev server via
+# django.contrib.staticfiles at /static/).
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# Target directory for `python manage.py collectstatic` (used in production).
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
