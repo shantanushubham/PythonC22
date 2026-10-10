@@ -200,11 +200,19 @@ class TxnSerializer(serializers.ModelSerializer):
         # send_notification_email.delay(
         #     sender.user.email, f"Transaction successful for amount {amount}"
         # )
-        send_transaction_notification.delay(
-            sender.user.phone_number,
-            sender.user.email,
-            f"Transaction successful for amount {amount}",
-        )
+        if sender is not None:
+            send_transaction_notification.delay(
+                sender.user.phone_number,
+                sender.user.email,
+                f"Transaction successful for amount {amount}",
+            )
+
+        if receiver is not None:
+            send_transaction_notification.delay(
+                receiver.user.phone_number,
+                receiver.user.email,
+                f"Transaction successful for amount {amount}",
+            )
         return txn
 
 
