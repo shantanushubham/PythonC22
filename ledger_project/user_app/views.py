@@ -1,4 +1,5 @@
 import logging
+import time
 from typing import override
 
 from django.db import transaction
@@ -32,7 +33,8 @@ class UserViewSet(ModelViewSet):
         user = require_current_user()
         logger.info(
             "class=UserViewSet op=get_queryset message=listing users user_id=%s is_staff=%s",
-            user.id, user.is_staff,
+            user.id,
+            user.is_staff,
         )
         if user.is_staff:
             return User.objects.all()
@@ -67,3 +69,10 @@ class LoginView(APIView):
             request.data.get("phone_number"),
         )
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
+
+
+class HealthCheckView(APIView):
+
+
+    def get(self, request: Request) -> Response:
+        return Response({"status": "healthy"}, status=status.HTTP_200_OK)
