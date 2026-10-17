@@ -335,3 +335,387 @@ class NotificationService:
         pass
 ``` 
 
+## SOLID Principles
+### 1. S - Single Responsibility Principle (SRP)
+
+Refers to the SRP section.
+
+### 2. O - Open/Closed Principle (OCP)
+
+Definition: A class should be open for extension but closed for modification.
+
+This means that we should be able to add new functionality to a class without modifying its existing code.
+
+Bad Example:
+```python
+class NotificationService:
+
+    def send(self, notification_type, message):
+        if notification_type == "email":
+            print(f"Sending email: {message}")
+        elif notification_type == "sms":
+            print(f"Sending SMS: {message}")
+        elif notification_type == "push":
+            print(f"Sending push notification: {message}")
+        elif notification_type == "WhatsApp":
+            print(f"Sending WhatsApp: {message}")
+```
+
+Right way is:
+```python
+
+from abc import ABC, abstractmethod
+
+class NotificationService(ABC):
+
+    @abstractmethod
+    def send(self, message):
+        pass
+
+class EmailNotificationService(NotificationService):
+
+    def send(self, message):
+        print(f"Sending email: {message}")
+
+class SMSNotificationService(NotificationService):
+
+    def send(self, message):
+        print(f"Sending SMS: {message}")
+
+class PushNotificationService(NotificationService):
+
+    def send(self, message):
+        print(f"Sending push notification: {message}")
+
+
+class WhatsAppNotificationService(NotificationService):
+
+    def send(self, message):
+        print(f"Sending WhatsApp: {message}")
+
+
+class OrderService:
+
+    def __init__(self, notification_service: NotificationService):
+        self.notification_service = notification_service
+
+    def create_order(self, user, items):
+        # Code to create an order
+        self.notification_service.send(f"Order created for {user} with items {items}")
+
+
+class OrderViewSet(ViewSet):
+
+    def create(self, request):
+        order_service = OrderService(
+            notification_service=EmailNotificationService()
+        )
+        order_service.create_order(
+            user=request.user,
+            items=request.data["items"]
+        )
+        return Response(status=201)
+```
+
+### 3. L - Liskov Substitution Principle (LSP)
+
+Defination: Objects of a child class should be usable wherever objects of the parent class are expected, without breaking the correctness of the program.
+
+Bad Example:
+```python
+from abc import ABC, abstractmethod
+
+
+class PaymentMethod(ABC):
+
+    @abstractmethod
+    def pay(self, amount):
+        pass
+
+
+class CreditCardPayment(PaymentMethod):
+
+    def pay(self, amount):
+        print(f"Paid ₹{amount} using credit card")
+
+
+class FreePayment(PaymentMethod):
+
+    def pay(self, amount):
+        raise NotImplementedError(
+            "Free payments cannot process transactions"
+        )
+
+def checkout(payment_method, amount):
+    payment_method.pay(amount)
+    print("Order completed successfully")
+
+checkout(CreditCardPayment(), 100)
+checkout(FreePayment(), 100)
+```
+
+Right way is: keep `PaymentMethod` only for types that can actually pay. Paid and free orders share a contract both can fulfill, so either one can be passed to `checkout`.
+
+```python
+from abc import ABC, abstractmethod
+
+
+class PaymentMethod(ABC):
+
+    @abstractmethod
+    def pay(self, amount):
+        pass
+
+
+class CreditCardPayment(PaymentMethod):
+
+    def pay(self, amount):
+        print(f"Paid ₹{amount} using credit card")
+
+
+class OrderProcessor(ABC):
+
+    @abstractmethod
+    def process(self, amount):
+        pass
+
+
+class PaidOrderProcessor(OrderProcessor):
+
+    def __init__(self, payment_method: PaymentMethod):
+        self.payment_method = payment_method
+
+    def process(self, amount):
+        self.payment_method.pay(amount)
+        print("Paid order processed")
+
+
+class FreeOrderProcessor(OrderProcessor):
+
+    def process(self, amount):
+        print("Free order processed")
+
+
+def checkout(order_processor: OrderProcessor, amount):
+    order_processor.process(amount)
+    print("Order completed successfully")
+
+
+checkout(PaidOrderProcessor(CreditCardPayment()), 100)
+checkout(FreeOrderProcessor(), 0)
+```
+
+### 4. I - Interface Segregation Principle (ISP)
+
+Definition: A client should not be forced to depend on interfaces it does not use.
+
+Bad Example:
+```python
+from abc import ABC, abstractmethod
+
+class Worker(ABC):
+
+    @abstractmethod
+    def work(self):
+        pass
+
+    @abstractmethod
+    def eat(self):
+        pass
+
+    @abstractmethod
+    def attend_meeting(self):
+        pass
+
+class HumanWorker(Worker):
+
+    def work(self):
+        print("Human is working")
+
+    def eat(self):
+        print("Human is eating")
+
+    def attend_meeting(self):
+        print("Human is attending a meeting")
+
+class RobotWorker(Worker):
+
+    def work(self):
+        print("Robot is working")
+
+    def eat(self):
+        raise NotImplementedError("Robots cannot eat")
+
+    def attend_meeting(self):
+        print("Robot is attending a meeting")
+
+class Activity:
+
+    def __init__(self,name, worker):
+        self.name = name
+        self.worker = worker
+
+    def perform(self):
+        for _ in range(10):
+            self.worker.work()
+        
+        self.worker.eat()
+
+        self.worker.attend_meeting()
+
+activity = Activity("Make Financial Report", HumanWorker())
+activity.perform()
+
+activity = Activity("Assemble Parts", RobotWorker())
+activity.perform() # This will raise an error
+```
+
+Right way is:
+
+```python
+from abc import ABC, abstractmethod
+
+class Workable(ABC):
+
+    @abstractmethod
+    def work(self):
+        pass
+
+class Eatable(ABC):
+
+    @abstractmethod
+    def eat(self):
+        pass
+
+class Attendable(ABC):
+
+    @abstractmethod
+    def attend_meeting(self):
+        pass
+
+class Flier(ABC):
+
+    @abstractmethod
+    def fly(self):
+        pass
+
+class HumanWorker(Workable, Eatable, Attendable):
+
+    def work(self):
+        print("Human is working")
+
+    def eat(self):
+        print("Human is eating")
+
+    def attend_meeting(self):
+        print("Human is attending a meeting")
+
+class RobotWorker(Workable, Attendable):
+
+    def work(self):
+        print("Robot is working")
+
+    def attend_meeting(self):
+        print("Robot is attending a meeting")
+
+
+class SuperHumanWorker(Workable, Eatable, Attendable, Flier):
+
+    def fly(self):
+        print("Super Human is flying")
+
+    def work(self):
+        print("Super Human is working")
+
+    def eat(self):
+        print("Super Human is eating")
+
+    def attend_meeting(self):
+        print("Super Human is attending a meeting")
+
+class Activity:
+
+    # worker has to be a child of Workable, Eatable, Attendable
+    def __init__(self,name, worker):
+        self.name = name
+        self.worker = worker
+
+    def perform(self):
+        for _ in range(10):
+            self.worker.work()
+        
+        self.worker.eat()
+
+        self.worker.attend_meeting()
+
+activity = Activity("Make Financial Report", HumanWorker())
+activity.perform()
+
+activity = Activity("Assemble Parts", RobotWorker()) # This will stop the code from running
+activity.perform() 
+```
+
+### 5. D - Dependency Inversion Principle (DIP)
+
+Defination:
+1. High-level modules should not depend on low-level modules. Both should depend on abstractions.
+2. Abstractions should not depend on details. Details should depend on abstractions.
+
+In simpler terms, business logic should not be tightly coupled to specific technical implementations.
+
+This principle is particularly useful in backend engineering.
+
+Bad Example:
+```python
+class PostgreSQLOrderRepository:
+
+    def save(self, order):
+        print(f"Saving order {order} to PostgreSQL")
+
+
+class OrderService:
+
+    def __init__(self):
+        self.repository = PostgreSQLOrderRepository()
+
+    def place_order(self, order):
+        self.repository.save(order)
+        print("Order placed successfully")
+```
+
+Right way is:
+```python
+
+class OrderRepository(ABC):
+
+    @abstractmethod
+    def save(self, order):
+        pass
+
+class MySQLOrderRepository(OrderRepository):
+
+    def save(self, order):
+        print(f"Saving order {order} to MySQL")
+
+class PostgreSQLOrderRepository(OrderRepository):
+
+    def save(self, order):
+        print(f"Saving order {order} to PostgreSQL")
+
+class OrderService:
+
+    def __init__(self, repository: OrderRepository):
+        self.repository = repository
+
+    def place_order(self, order):
+        self.repository.save(order)
+        print("Order placed successfully")
+
+
+def checkout(order):
+    order_service = OrderService(
+        repository=MySQLOrderRepository()
+    )
+    order_service.place_order(order)
+    print("Order placed successfully")
+```
