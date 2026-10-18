@@ -1,0 +1,1 @@
+"""Mock card payment service."""

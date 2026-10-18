@@ -1,0 +1,101 @@
+{{define "head"}}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<style>
+  :root { --accent: {{.Accent}}; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 16px/1.5 system-ui, sans-serif; background: #f2f4f7; color: #1d2433; }
+  header { background: var(--accent); color: #fff; padding: 18px 24px; font-size: 20px; font-weight: 600; }
+  .mock { background: #fff3cd; color: #664d03; padding: 8px 24px; font-size: 14px; border-bottom: 1px solid #ffe69c; }
+  main { max-width: 440px; margin: 28px auto; padding: 0 16px; }
+  .card { background: #fff; border-radius: 8px; padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,.12); }
+  .amount { font-size: 28px; font-weight: 700; margin: 4px 0 2px; }
+  .muted { color: #5b6577; font-size: 14px; }
+  label { display: block; margin: 16px 0 4px; font-weight: 600; font-size: 14px; }
+  input { width: 100%; padding: 10px 12px; border: 1px solid #b8c0cc; border-radius: 6px; font-size: 16px; }
+  input:focus { outline: 2px solid var(--accent); border-color: transparent; }
+  .actions { display: flex; gap: 12px; margin-top: 22px; }
+  button { flex: 1; padding: 12px; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; border: 0; }
+  button.primary { background: var(--accent); color: #fff; }
+  button.secondary { background: #e6e9ee; color: #1d2433; }
+  .error { background: #fde8e8; color: #8a1c1c; border-radius: 6px; padding: 10px 12px; margin-top: 16px; font-size: 14px; }
+  .status { font-size: 22px; font-weight: 700; margin: 0 0 8px; }
+  a.button { display: block; text-align: center; background: var(--accent); color: #fff; padding: 12px;
+             border-radius: 6px; text-decoration: none; font-weight: 600; margin-top: 20px; }
+  details { margin-top: 20px; font-size: 14px; color: #3b4658; }
+  summary { cursor: pointer; font-weight: 600; }
+  code { background: #eef0f4; padding: 1px 5px; border-radius: 4px; }
+  ul { padding-left: 20px; }
+</style>
+{{end}}
+
+{{define "login"}}<!doctype html>
+<html lang="en">
+<head><title>{{.BankName}} Netbanking</title>{{template "head" .}}</head>
+<body>
+  <header>{{.BankName}} Netbanking</header>
+  <div class="mock">Mock bank for testing. No real money moves and no real credentials are used.</div>
+  <main>
+    <div class="card">
+      <div class="muted">You are paying</div>
+      <div class="amount">&#8377;{{.Amount}}</div>
+      {{if .Reference}}<div class="muted">Order reference: {{.Reference}}</div>{{end}}
+
+      {{if .Message}}<div class="error" role="alert">{{.Message}}</div>{{end}}
+
+      <form method="post" action="/bank/{{.TransactionID}}/login" autocomplete="off">
+        <label for="customer_id">Customer ID</label>
+        <input id="customer_id" name="customer_id" type="text" maxlength="64" required autofocus autocomplete="off">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" maxlength="128" required autocomplete="off">
+        <div class="actions">
+          <button class="secondary" type="submit" name="action" value="cancel" formnovalidate>Cancel</button>
+          <button class="primary" type="submit" name="action" value="pay">Pay</button>
+        </div>
+      </form>
+
+      <details>
+        <summary>Test logins</summary>
+        <ul>
+          <li>Any customer ID and password: payment succeeds.</li>
+          <li>Password <code>wrong</code>: login fails, you can retry.</li>
+          <li>Customer ID <code>insufficient</code>, <code>declined</code>, <code>timeout</code>,
+              <code>locked</code> or <code>limit</code>: payment fails.</li>
+        </ul>
+      </details>
+    </div>
+  </main>
+</body>
+</html>{{end}}
+
+{{define "closed"}}<!doctype html>
+<html lang="en">
+<head><title>{{.BankName}} Netbanking</title>{{template "head" .}}</head>
+<body>
+  <header>{{.BankName}} Netbanking</header>
+  <div class="mock">Mock bank for testing. No real money moves and no real credentials are used.</div>
+  <main>
+    <div class="card">
+      <p class="status">{{.Title}}</p>
+      <p>{{.Detail}}</p>
+      <a class="button" href="{{.ReturnURL}}">Return to merchant</a>
+    </div>
+  </main>
+</body>
+</html>{{end}}
+
+{{define "error"}}<!doctype html>
+<html lang="en">
+<head><title>Netbanking</title>{{template "head" .}}</head>
+<body>
+  <header>Netbanking</header>
+  <div class="mock">Mock bank for testing. No real money moves and no real credentials are used.</div>
+  <main>
+    <div class="card">
+      <p class="status">{{.Title}}</p>
+      <p>{{.Message}}</p>
+    </div>
+  </main>
+</body>
+</html>{{end}}

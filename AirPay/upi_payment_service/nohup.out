@@ -1,0 +1,5 @@
+
+> upi-payment-service@1.0.0 start
+> node dist/index.js
+
+2026-10-18T12:54:30.254Z INFO upi_payment_service_started url=http://localhost:8003 docs=http://localhost:8003/docs approval_delay_ms=3000

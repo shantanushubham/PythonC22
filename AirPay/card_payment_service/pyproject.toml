@@ -1,0 +1,20 @@
+[project]
+name = "card-payment-service"
+version = "0.1.0"
+description = "Mock card payment service that authorizes Visa, Mastercard, Diners, American Express, and RuPay transactions."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.143.5",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx2>=2.13.1",
+    "pytest>=9.1.1",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

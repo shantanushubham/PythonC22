@@ -1,0 +1,7 @@
+node_modules/
+dist/
+
+# SQLite payment store (and its WAL files)
+*.db
+*.db-shm
+*.db-wal

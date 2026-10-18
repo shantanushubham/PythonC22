@@ -1,0 +1,451 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Netbanking Support Service",
+    "version": "1.0.0",
+    "summary": "Mock netbanking for the major Indian banks.",
+    "description": "Mock service used by the AirPay payment gateway to take payments through the net banking of major Indian banks. No real bank is contacted and no real money moves. Payments are saved to a local SQLite file, and the service never stores customer credentials.\n\n### How a payment works\nNetbanking sends the customer to their bank's own website, so the payment is asynchronous:\n1. The gateway calls `POST /api/v1/payments` with the amount, the bank and a `return_url`. It receives status `PENDING` and a `redirect_url`.\n2. The gateway sends the customer's browser to `redirect_url`. This is the mock bank's login page, where the customer pays or cancels.\n3. The bank sends the customer's browser back to `return_url` with `transaction_id`, `status` and `reference` in the query string.\n4. The gateway **must** confirm the outcome with `GET /api/v1/payments/{transaction_id}`. The query string can be edited by the customer and must not be trusted.\n\nA payment moves `PENDING` to one of `SUCCESS`, `FAILED`, `CANCELLED` or `EXPIRED`, and then never changes again. A payment the customer does not finish in time becomes `EXPIRED`.\n\n### Test logins on the bank page\nAny customer ID and password succeeds. The password `wrong` fails the login and the customer can retry. The customer IDs `insufficient`, `declined`, `timeout`, `locked` and `limit` make the bank decline the payment. A bank listed as `DOWN` in `GET /api/v1/banks` cannot take payments and returns `503`.\n\n### Errors\nEvery error has the shape `{\"success\": false, \"message\": \"...\"}`. Validation errors add an `errors` list naming each invalid field."
+  },
+  "servers": [
+    { "url": "http://localhost:8002", "description": "Local development" }
+  ],
+  "tags": [
+    { "name": "payments", "description": "Start a netbanking payment and check its outcome." },
+    { "name": "banks", "description": "The banks customers can pay from." },
+    { "name": "health", "description": "Service liveness." }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "getHealth",
+        "summary": "Check the service is running",
+        "tags": ["health"],
+        "responses": {
+          "200": {
+            "description": "The service is running.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HealthResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/banks": {
+      "get": {
+        "operationId": "listBanks",
+        "summary": "List the supported banks",
+        "description": "Returns every bank with its status. Use `status=UP` to show only the banks that can take a payment right now.",
+        "tags": ["banks"],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Only return banks with this status. Not case sensitive.",
+            "schema": { "type": "string", "enum": ["UP", "DOWN"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The banks, ordered by name.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BanksResponse" },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "banks": [
+                      { "code": "UTIB", "name": "Axis Bank", "status": "UP" },
+                      { "code": "BKID", "name": "Bank of India", "status": "DOWN" },
+                      { "code": "HDFC", "name": "HDFC Bank", "status": "UP" }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The status filter is not UP or DOWN.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": {
+                  "success": false,
+                  "message": "Validation failed",
+                  "errors": [{ "field": "status", "message": "status must be UP or DOWN" }]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payments": {
+      "post": {
+        "operationId": "createPayment",
+        "summary": "Start a netbanking payment",
+        "description": "Creates a payment in the `PENDING` state and returns `redirect_url`, the bank page to send the customer to. The result is not known yet: after the customer returns, call `getPayment` to read it.\n\nSend an `Idempotency-Key` to retry safely. The same key and body return the original payment, in its current state, with status `200` and the header `Idempotent-Replayed: true`. The same key with a different body returns `409`.",
+        "tags": ["payments"],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "description": "1-255 characters: letters, digits and . _ : -. Sent once.",
+            "schema": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{1,255}$" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreatePaymentRequest" },
+              "example": {
+                "amount": "1500.50",
+                "currency": "INR",
+                "bank_code": "HDFC",
+                "return_url": "https://shop.example.com/payments/return",
+                "reference": "order_1001"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The payment was created. Send the customer to `redirect_url`.",
+            "headers": {
+              "Location": {
+                "description": "Where to read the payment.",
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PaymentResponse" },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "transaction_id": "nb_3f6c2d1e-7a54-4b8e-9d0a-1c2b3a4d5e6f",
+                    "status": "PENDING",
+                    "amount": "1500.50",
+                    "currency": "INR",
+                    "bank": { "code": "HDFC", "name": "HDFC Bank" },
+                    "redirect_url": "http://localhost:8002/bank/nb_3f6c2d1e-7a54-4b8e-9d0a-1c2b3a4d5e6f",
+                    "return_url": "https://shop.example.com/payments/return",
+                    "reference": "order_1001",
+                    "created_at": "2026-10-18T12:30:00.000000Z",
+                    "expires_at": "2026-10-18T12:45:00.000000Z"
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "An earlier request with the same Idempotency-Key already created this payment. It is returned in its current state.",
+            "headers": {
+              "Idempotent-Replayed": {
+                "description": "Always `true` on this response.",
+                "schema": { "type": "string", "enum": ["true"] }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PaymentResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "The request failed validation. No payment is created.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": {
+                  "success": false,
+                  "message": "Validation failed",
+                  "errors": [
+                    { "field": "bank_code", "message": "bank_code is not a supported bank" },
+                    { "field": "return_url", "message": "return_url must be an absolute http or https URL" }
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The Idempotency-Key was already used with a different request.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": {
+                  "success": false,
+                  "message": "Idempotency key was already used with a different request"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "The request body is larger than 1 MiB.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "success": false, "message": "Internal server error" }
+              }
+            }
+          },
+          "503": {
+            "description": "The bank is down and cannot take payments. Offer another bank or retry later. No payment is created.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": {
+                  "success": false,
+                  "message": "Bank of India is currently unavailable. Try another bank or retry later."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payments/{transaction_id}": {
+      "get": {
+        "operationId": "getPayment",
+        "summary": "Get the current state of a payment",
+        "description": "Use this to confirm the outcome after the customer returns to your `return_url`. `success` is true when the payment was found. Read `data.status` for the outcome. A pending payment past its deadline is reported as `EXPIRED`.",
+        "tags": ["payments"],
+        "parameters": [
+          {
+            "name": "transaction_id",
+            "in": "path",
+            "required": true,
+            "description": "The `transaction_id` returned by `createPayment`.",
+            "schema": { "type": "string" },
+            "example": "nb_3f6c2d1e-7a54-4b8e-9d0a-1c2b3a4d5e6f"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The payment.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PaymentResponse" },
+                "examples": {
+                  "success": {
+                    "summary": "Paid",
+                    "value": {
+                      "success": true,
+                      "data": {
+                        "transaction_id": "nb_3f6c2d1e-7a54-4b8e-9d0a-1c2b3a4d5e6f",
+                        "status": "SUCCESS",
+                        "amount": "1500.50",
+                        "currency": "INR",
+                        "bank": { "code": "HDFC", "name": "HDFC Bank" },
+                        "return_url": "https://shop.example.com/payments/return",
+                        "reference": "order_1001",
+                        "bank_reference": "HDFC482916037455",
+                        "created_at": "2026-10-18T12:30:00.000000Z",
+                        "expires_at": "2026-10-18T12:45:00.000000Z",
+                        "completed_at": "2026-10-18T12:31:12.250000Z"
+                      }
+                    }
+                  },
+                  "failed": {
+                    "summary": "Declined by the bank",
+                    "value": {
+                      "success": true,
+                      "data": {
+                        "transaction_id": "nb_9a1b2c3d-4e5f-4a6b-8c7d-0e1f2a3b4c5d",
+                        "status": "FAILED",
+                        "amount": "500.00",
+                        "currency": "INR",
+                        "bank": { "code": "SBIN", "name": "State Bank of India" },
+                        "return_url": "https://shop.example.com/payments/return",
+                        "failure_reason": "Insufficient funds",
+                        "created_at": "2026-10-18T12:30:00.000000Z",
+                        "expires_at": "2026-10-18T12:45:00.000000Z",
+                        "completed_at": "2026-10-18T12:30:40.100000Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No payment has this id.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": {
+                  "success": false,
+                  "message": "No payment found with id 'nb_missing'"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreatePaymentRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["amount", "bank_code", "return_url"],
+        "properties": {
+          "amount": {
+            "type": ["string", "number"],
+            "description": "Amount in rupees with at most 2 decimal places, greater than 0 and at most 10000000.00. A string such as \"1500.50\" is safest. The response always returns a 2-decimal string.",
+            "examples": ["1500.50"]
+          },
+          "currency": {
+            "type": "string",
+            "enum": ["INR"],
+            "default": "INR"
+          },
+          "bank_code": {
+            "type": "string",
+            "pattern": "^[A-Za-z]{4}$",
+            "description": "The `code` of a bank from `listBanks`. Not case sensitive.",
+            "examples": ["HDFC"]
+          },
+          "return_url": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 2048,
+            "description": "Where the customer is sent after the payment ends. An absolute http or https URL without a username or password.",
+            "examples": ["https://shop.example.com/payments/return"]
+          },
+          "reference": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,64}$",
+            "description": "Your own id for this payment, such as an order id. It is passed back on the return URL.",
+            "examples": ["order_1001"]
+          }
+        }
+      },
+      "Payment": {
+        "type": "object",
+        "required": [
+          "transaction_id", "status", "amount", "currency", "bank",
+          "return_url", "created_at", "expires_at"
+        ],
+        "properties": {
+          "transaction_id": { "type": "string", "examples": ["nb_3f6c2d1e-7a54-4b8e-9d0a-1c2b3a4d5e6f"] },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "SUCCESS", "FAILED", "CANCELLED", "EXPIRED"],
+            "description": "`PENDING` is the only state that can change."
+          },
+          "amount": { "type": "string", "description": "Amount in rupees with 2 decimals.", "examples": ["1500.50"] },
+          "currency": { "type": "string", "enum": ["INR"] },
+          "bank": {
+            "type": "object",
+            "required": ["code", "name"],
+            "properties": {
+              "code": { "type": "string", "examples": ["HDFC"] },
+              "name": { "type": "string", "examples": ["HDFC Bank"] }
+            }
+          },
+          "redirect_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "The bank page to send the customer to. Only present while the status is `PENDING`."
+          },
+          "return_url": { "type": "string", "format": "uri" },
+          "reference": { "type": "string", "description": "Your reference, if you sent one." },
+          "bank_reference": {
+            "type": "string",
+            "description": "The bank's own reference. Only present when the status is `SUCCESS`."
+          },
+          "failure_reason": {
+            "type": "string",
+            "description": "Why the payment did not succeed. Present when the status is `FAILED`, `CANCELLED` or `EXPIRED`."
+          },
+          "created_at": { "type": "string", "format": "date-time" },
+          "expires_at": { "type": "string", "format": "date-time", "description": "After this time a pending payment becomes `EXPIRED`." },
+          "completed_at": { "type": "string", "format": "date-time", "description": "When the payment reached its final state." }
+        }
+      },
+      "PaymentResponse": {
+        "type": "object",
+        "required": ["success", "data"],
+        "properties": {
+          "success": { "type": "boolean", "const": true },
+          "data": { "$ref": "#/components/schemas/Payment" }
+        }
+      },
+      "Bank": {
+        "type": "object",
+        "required": ["code", "name", "status"],
+        "properties": {
+          "code": { "type": "string", "description": "The four-letter prefix of the bank's IFSC codes.", "examples": ["HDFC"] },
+          "name": { "type": "string", "examples": ["HDFC Bank"] },
+          "status": { "type": "string", "enum": ["UP", "DOWN"] }
+        }
+      },
+      "BanksResponse": {
+        "type": "object",
+        "required": ["success", "data"],
+        "properties": {
+          "success": { "type": "boolean", "const": true },
+          "data": {
+            "type": "object",
+            "required": ["banks"],
+            "properties": {
+              "banks": { "type": "array", "items": { "$ref": "#/components/schemas/Bank" } }
+            }
+          }
+        }
+      },
+      "FieldError": {
+        "type": "object",
+        "required": ["field", "message"],
+        "properties": {
+          "field": { "type": "string" },
+          "message": { "type": "string" }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "required": ["success", "message"],
+        "properties": {
+          "success": { "type": "boolean", "const": false },
+          "message": { "type": "string" },
+          "errors": { "type": "array", "items": { "$ref": "#/components/schemas/FieldError" } }
+        }
+      },
+      "HealthResponse": {
+        "type": "object",
+        "required": ["status", "service", "banks"],
+        "properties": {
+          "status": { "type": "string", "const": "ok" },
+          "service": { "type": "string", "const": "netbanking-support" },
+          "banks": {
+            "type": "array",
+            "description": "Codes of every supported bank.",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,645 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Card Payment Service",
+    "summary": "Mock card network for debit and credit card payments.",
+    "description": "Mock card network for the AirPay payment gateway.\n\nSend card details and the service identifies the network (Visa, Mastercard, Diners,\nAmerican Express, or RuPay) and returns an authorization. Nothing is sent to a real\nnetwork. Payments are saved to a local SQLite file, so they survive restarts. Only the\nlast four digits of the card are stored. **Never send real card numbers.**\n\n### Outcomes\n* `200` - approved (`data.status` is `SUCCESS`).\n* `402` - declined by the issuer (`data.status` is `FAILED`, see `data.failure_reason`).\n  A decline is a completed call with a real `transaction_id`, not an error.\n* `400` - the request was rejected before reaching a network. No transaction is created.\n\n### Mock issuer decision\nThe digit before the Luhn check digit of the card number chooses the result:\n`0`-`6` approve, `7` insufficient funds, `8` declined by issuer, `9` network timeout.\nA CVV of `000` (`0000` for American Express) is declined with `Incorrect CVV`.\n",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8001",
+      "description": "Local development"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Check the service is running",
+        "operationId": "getHealth",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payments": {
+      "post": {
+        "tags": [
+          "payments"
+        ],
+        "summary": "Authorize a debit or credit card payment",
+        "description": "Identifies the card network from the card number, validates the card, and returns the issuer decision. Approved payments return 200 and declines return 402. Both carry a `transaction_id`.",
+        "operationId": "createPayment",
+        "parameters": [
+          {
+            "name": "idempotency-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Optional. Repeating the same key and body returns the original authorization instead of creating a second one.",
+              "title": "Idempotency-Key"
+            },
+            "description": "Optional. Repeating the same key and body returns the original authorization instead of creating a second one."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePaymentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The card network approved the payment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentResponse"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "transaction_id": "txn_bd87dbbb-c490-42eb-9ba4-a5dd0954f944",
+                    "status": "SUCCESS",
+                    "amount": "1500.50",
+                    "currency": "INR",
+                    "card": {
+                      "network": "visa",
+                      "card_type": "credit",
+                      "last4": "1111",
+                      "holder_name": "Jane Doe",
+                      "expiry_month": 12,
+                      "expiry_year": 2030
+                    },
+                    "authorization_code": "FQKM8X",
+                    "network_reference": "907497627294",
+                    "reference": "order_1001",
+                    "created_at": "2026-10-18T12:13:18.486954Z",
+                    "processed_at": "2026-10-18T12:13:18.486954Z"
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Idempotent-Replayed": {
+                "description": "`true` when this is the stored result of an earlier request with the same Idempotency-Key.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "true"
+                  ]
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "The card network declined the payment.",
+            "headers": {
+              "Idempotent-Replayed": {
+                "description": "`true` when this is the stored result of an earlier request with the same Idempotency-Key.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "true"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "data": {
+                    "transaction_id": "txn_4439f2b9-188e-43fc-9017-25e25e9ce042",
+                    "status": "FAILED",
+                    "amount": "500.00",
+                    "currency": "INR",
+                    "card": {
+                      "network": "visa",
+                      "card_type": "credit",
+                      "last4": "0070",
+                      "holder_name": "Jane Doe",
+                      "expiry_month": 12,
+                      "expiry_year": 2030
+                    },
+                    "network_reference": "015408678528",
+                    "failure_reason": "Insufficient funds",
+                    "created_at": "2026-10-18T12:13:18.601851Z",
+                    "processed_at": "2026-10-18T12:13:18.601851Z"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request failed validation. No transaction is created.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "Validation failed",
+                  "errors": [
+                    {
+                      "field": "card.number",
+                      "message": "card number failed the Luhn check"
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The Idempotency-Key was already used with a different body.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "Idempotency key was already used with a different request"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "Internal server error"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payments/{transaction_id}": {
+      "get": {
+        "tags": [
+          "payments"
+        ],
+        "summary": "Fetch a previously authorized payment",
+        "description": "Returns the stored payment, whether it was approved or declined. `success` is true when the payment was found; read `data.status` for the outcome.",
+        "operationId": "getPayment",
+        "parameters": [
+          {
+            "name": "transaction_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Transaction Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown transaction id.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "No payment found with id 'txn_missing'"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CardDetails": {
+        "properties": {
+          "number": {
+            "type": "string",
+            "pattern": "^\\d{13,19}$",
+            "title": "Number",
+            "description": "Primary account number. Spaces and dashes are stripped.",
+            "examples": [
+              "4111111111111111"
+            ]
+          },
+          "expiry_month": {
+            "type": "integer",
+            "maximum": 12.0,
+            "minimum": 1.0,
+            "title": "Expiry Month",
+            "examples": [
+              12
+            ]
+          },
+          "expiry_year": {
+            "type": "integer",
+            "maximum": 2100.0,
+            "minimum": 2000.0,
+            "title": "Expiry Year",
+            "description": "Four-digit year.",
+            "examples": [
+              2030
+            ]
+          },
+          "cvv": {
+            "type": "string",
+            "pattern": "^\\d{3,4}$",
+            "title": "Cvv",
+            "description": "3 digits, or 4 digits for American Express.",
+            "examples": [
+              "123"
+            ]
+          },
+          "holder_name": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z .'\\-]{1,99}$",
+            "title": "Holder Name",
+            "examples": [
+              "Jane Doe"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "number",
+          "expiry_month",
+          "expiry_year",
+          "cvv",
+          "holder_name"
+        ],
+        "title": "CardDetails"
+      },
+      "CardNetwork": {
+        "type": "string",
+        "enum": [
+          "visa",
+          "mastercard",
+          "diners",
+          "american_express",
+          "rupay"
+        ],
+        "title": "CardNetwork"
+      },
+      "CardSummary": {
+        "properties": {
+          "network": {
+            "$ref": "#/components/schemas/CardNetwork"
+          },
+          "card_type": {
+            "type": "string",
+            "enum": [
+              "credit",
+              "debit"
+            ],
+            "title": "Card Type"
+          },
+          "last4": {
+            "type": "string",
+            "title": "Last4"
+          },
+          "holder_name": {
+            "type": "string",
+            "title": "Holder Name"
+          },
+          "expiry_month": {
+            "type": "integer",
+            "title": "Expiry Month"
+          },
+          "expiry_year": {
+            "type": "integer",
+            "title": "Expiry Year"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "network",
+          "card_type",
+          "last4",
+          "holder_name",
+          "expiry_month",
+          "expiry_year"
+        ],
+        "title": "CardSummary",
+        "description": "The masked card. The full number and CVV are never part of a stored payment."
+      },
+      "CreatePaymentRequest": {
+        "properties": {
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Amount",
+            "description": "Amount in major units, for example \"1500.50\"."
+          },
+          "currency": {
+            "type": "string",
+            "const": "INR",
+            "title": "Currency",
+            "default": "INR"
+          },
+          "card_type": {
+            "type": "string",
+            "enum": [
+              "credit",
+              "debit"
+            ],
+            "title": "Card Type"
+          },
+          "card": {
+            "$ref": "#/components/schemas/CardDetails"
+          },
+          "reference": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64,
+                "pattern": "^[A-Za-z0-9_-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reference",
+            "description": "Your own id for this payment, such as an order id."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "amount",
+          "card_type",
+          "card"
+        ],
+        "title": "CreatePaymentRequest",
+        "examples": [
+          {
+            "amount": "1500.50",
+            "card": {
+              "cvv": "123",
+              "expiry_month": 12,
+              "expiry_year": 2030,
+              "holder_name": "Jane Doe",
+              "number": "4111111111111111"
+            },
+            "card_type": "credit",
+            "currency": "INR",
+            "reference": "order_1001"
+          }
+        ]
+      },
+      "ErrorResponse": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "const": false,
+            "title": "Success",
+            "default": false
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "errors": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FieldError"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errors"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "title": "ErrorResponse"
+      },
+      "FieldError": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "title": "Field"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "field",
+          "message"
+        ],
+        "title": "FieldError"
+      },
+      "HealthResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "ok",
+            "title": "Status",
+            "default": "ok"
+          },
+          "service": {
+            "type": "string",
+            "const": "card-payment-service",
+            "title": "Service",
+            "default": "card-payment-service"
+          },
+          "networks": {
+            "items": {
+              "$ref": "#/components/schemas/CardNetwork"
+            },
+            "type": "array",
+            "title": "Networks"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "networks"
+        ],
+        "title": "HealthResponse"
+      },
+      "PaymentRecord": {
+        "properties": {
+          "transaction_id": {
+            "type": "string",
+            "title": "Transaction Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "SUCCESS",
+              "FAILED"
+            ],
+            "title": "Status"
+          },
+          "amount": {
+            "type": "string",
+            "title": "Amount"
+          },
+          "currency": {
+            "type": "string",
+            "const": "INR",
+            "title": "Currency"
+          },
+          "card": {
+            "$ref": "#/components/schemas/CardSummary"
+          },
+          "authorization_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Authorization Code"
+          },
+          "network_reference": {
+            "type": "string",
+            "title": "Network Reference"
+          },
+          "failure_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Failure Reason"
+          },
+          "reference": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reference"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "processed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Processed At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "transaction_id",
+          "status",
+          "amount",
+          "currency",
+          "card",
+          "network_reference",
+          "created_at",
+          "processed_at"
+        ],
+        "title": "PaymentRecord"
+      },
+      "PaymentResponse": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PaymentRecord"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "success",
+          "data"
+        ],
+        "title": "PaymentResponse"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "payments",
+      "description": "Authorize debit and credit card payments."
+    },
+    {
+      "name": "health",
+      "description": "Service liveness."
+    }
+  ]
+}

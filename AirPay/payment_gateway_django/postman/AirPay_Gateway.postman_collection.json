@@ -1,0 +1,447 @@
+{
+  "info": {
+    "_postman_id": "7c9e1a2b-4d3f-4a80-9c12-5e6f7a8b9c0d",
+    "name": "AirPay Payment Gateway",
+    "description": "Django REST API for AirPay.\n\n**Suggested order**\n\n1. Health → Register → Login (saves JWT tokens into the environment)\n2. Get / Update me\n3. Create API key (saves `api_key` and `api_key_id`; the secret is shown this once)\n4. List / Get API key\n5. Payments Whoami (uses `X-API-Key`, not the JWT)\n6. Refresh token (replaces both tokens; keep the new refresh token)\n7. Revoke API key and Logout last — they are destructive\n\nDashboard endpoints send `Authorization: Bearer {{access_token}}` from the collection. Payment endpoints send `X-API-Key: {{api_key}}` instead. The two credentials are not interchangeable.\n\nRegister will return 400 if `{{email}}` is already taken. Skip it and go to Login.\n\nStart the app with `uv run python manage.py runserver 8000` and select **AirPay Gateway — Local** as the environment.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Check health",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('gateway is up', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json().status).to.eql('ok');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/health",
+            "description": "Liveness and readiness. Returns 200 when the database answers `SELECT 1`, otherwise 503. No login."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const body = pm.response.json();",
+                  "  pm.environment.set('customer_id', body.id);",
+                  "  pm.test('signed up', function () {",
+                  "    pm.expect(body.email).to.eql(pm.environment.get('email'));",
+                  "    pm.expect(body).to.not.have.property('password');",
+                  "  });",
+                  "} else if (pm.response.code === 400) {",
+                  "  pm.test('email already registered — skip to Login', function () {",
+                  "    pm.expect(pm.response.json().success).to.eql(false);",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\",\n  \"first_name\": \"{{first_name}}\",\n  \"last_name\": \"{{last_name}}\",\n  \"company_name\": \"{{company_name}}\",\n  \"company_address\": \"{{company_address}}\"\n}"
+            },
+            "url": "{{base_url}}/api/v1/customers",
+            "description": "Create a customer. Password must pass Django's validators (length, not common, not all digits, not too similar to the name or email). 400 if the email is already taken."
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('logged in', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.have.keys('access', 'refresh');",
+                  "  pm.environment.set('access_token', body.access);",
+                  "  pm.environment.set('refresh_token', body.refresh);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+            },
+            "url": "{{base_url}}/api/v1/auth/login",
+            "description": "Exchange email and password for an access token (15 minutes) and a refresh token (7 days). Saves both into the environment. A wrong password and an unknown email return the same 401."
+          }
+        },
+        {
+          "name": "Refresh tokens",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('rotated the pair', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.have.keys('access', 'refresh');",
+                  "  pm.environment.set('access_token', body.access);",
+                  "  pm.environment.set('refresh_token', body.refresh);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}"
+            },
+            "url": "{{base_url}}/api/v1/auth/refresh",
+            "description": "Send the current refresh token. The response has a new access token and a new refresh token. The one you sent is revoked, so keep the new one. Reusing the old one returns 401."
+          }
+        },
+        {
+          "name": "Logout",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('refresh token revoked', function () {",
+                  "  pm.response.to.have.status(204);",
+                  "  pm.environment.unset('refresh_token');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}"
+            },
+            "url": "{{base_url}}/api/v1/auth/logout",
+            "description": "Revokes the refresh token (204). An access token already issued keeps working until it expires. Run this last if you still need the JWT for other requests."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customers",
+      "item": [
+        {
+          "name": "Get me",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('returns this customer', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.email).to.eql(pm.environment.get('email'));",
+                  "  pm.expect(body).to.not.have.property('password');",
+                  "  pm.environment.set('customer_id', body.id);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/customers/me",
+            "description": "The logged-in customer. Needs `Authorization: Bearer {{access_token}}`."
+          }
+        },
+        {
+          "name": "Update me",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('profile updated', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json().company_name).to.be.a('string');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"{{first_name}}\",\n  \"last_name\": \"{{last_name}}\",\n  \"company_name\": \"{{company_name}}\",\n  \"company_address\": \"{{company_address}}\"\n}"
+            },
+            "url": "{{base_url}}/api/v1/customers/me",
+            "description": "Change `first_name`, `last_name`, `company_name`, `company_address`. Email, password, id and staff flags in the body are ignored. PUT and DELETE are not allowed."
+          }
+        }
+      ]
+    },
+    {
+      "name": "API keys",
+      "item": [
+        {
+          "name": "Create API key",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expires = new Date();",
+                  "expires.setUTCDate(expires.getUTCDate() + 30);",
+                  "pm.collectionVariables.set('api_key_expires_at', expires.toISOString());"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('key issued once', function () {",
+                  "  pm.response.to.have.status(201);",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.key).to.match(/^apk_/);",
+                  "  pm.expect(body.status).to.eql('active');",
+                  "  pm.environment.set('api_key', body.key);",
+                  "  pm.environment.set('api_key_id', body.id);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman\",\n  \"expires_at\": \"{{api_key_expires_at}}\"\n}"
+            },
+            "url": "{{base_url}}/api/v1/customers/me/api-keys",
+            "description": "Needs a JWT. `expires_at` is required, must be in the future, and at most 365 days away. The pre-request script sets it to 30 days from now.\n\nThe secret is in `key` and is shown this once. The test script saves it as `{{api_key}}`. Store it; list and get never return it."
+          }
+        },
+        {
+          "name": "List API keys",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('secrets are not listed', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const keys = pm.response.json();",
+                  "  pm.expect(keys).to.be.an('array');",
+                  "  keys.forEach(function (k) {",
+                  "    pm.expect(k).to.not.have.property('key');",
+                  "    pm.expect(k).to.not.have.property('secret_hash');",
+                  "  });",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/customers/me/api-keys",
+            "description": "Every key this customer holds. Use `prefix` and `last_four` to recognise one. The secret is never included."
+          }
+        },
+        {
+          "name": "Get API key",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('one key, no secret', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.id).to.eql(pm.environment.get('api_key_id'));",
+                  "  pm.expect(body).to.not.have.property('key');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/customers/me/api-keys/{{api_key_id}}",
+            "description": "One of your keys. Another customer's id is a 404. Run Create API key first so `{{api_key_id}}` is set."
+          }
+        },
+        {
+          "name": "Revoke API key",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('revoked', function () {",
+                  "  pm.response.to.have.status(204);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{base_url}}/api/v1/customers/me/api-keys/{{api_key_id}}",
+            "description": "The key stops working at once. Idempotent: revoking twice is still 204. Run Payments Whoami before this if you want to see a working key."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Whoami",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('API key accepted', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.email).to.eql(pm.environment.get('email'));",
+                  "  pm.expect(body.api_key_id).to.eql(pm.environment.get('api_key_id'));",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [
+              { "key": "X-API-Key", "value": "{{api_key}}" }
+            ],
+            "url": "{{base_url}}/api/v1/payments/whoami",
+            "description": "Confirms the API key. A JWT is not accepted here (`Authorization: Api-Key {{api_key}}` also works). Create an API key first. Later payment endpoints will sit next to this one and use the same header."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Docs",
+      "item": [
+        {
+          "name": "OpenAPI schema",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('OpenAPI 3', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json().openapi).to.match(/^3\\./);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/vnd.oai.openapi+json" }
+            ],
+            "url": "{{base_url}}/api/schema/",
+            "description": "Machine-readable OpenAPI 3 schema generated from the views."
+          }
+        },
+        {
+          "name": "Swagger UI",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('docs page', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/docs/",
+            "description": "Interactive Swagger UI. Easier to open in a browser than in Postman."
+          }
+        }
+      ]
+    }
+  ]
+}

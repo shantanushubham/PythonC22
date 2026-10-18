@@ -1,0 +1,7 @@
+# SQLite payment store (and its WAL files)
+card_payments.db
+card_payments.db-shm
+card_payments.db-wal
+*.db
+*.db-shm
+*.db-wal
