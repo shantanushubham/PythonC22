@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from customers.models import APIKey, Customer
+from customers.models import APIKey, BankAccount, Customer
 
 
 @admin.register(Customer)
@@ -64,6 +64,26 @@ class APIKeyAdmin(admin.ModelAdmin):
     @admin.display(description="status")
     def status(self, key: APIKey) -> str:
         return key.status
+
+    def has_add_permission(self, request):
+        return False
+
+
+@admin.register(BankAccount)
+class BankAccountAdmin(admin.ModelAdmin):
+    list_display = ["ifsc", "last_four", "customer", "account_holder_name", "is_default", "revoked_at"]
+    list_filter = ["is_default", "account_type"]
+    search_fields = ["ifsc", "last_four", "customer__email"]
+    readonly_fields = [
+        "id",
+        "customer",
+        "last_four",
+        "ifsc",
+        "fingerprint",
+        "revoked_at",
+        "created_at",
+    ]
+    fields = readonly_fields + ["account_holder_name", "bank_name", "account_type", "is_default"]
 
     def has_add_permission(self, request):
         return False

@@ -2,3 +2,8 @@ time=2026-10-18T18:24:30.256+05:30 level=INFO msg="netbanking listening" addr=:8
 time=2026-10-18T18:25:05.012+05:30 level=INFO msg=request request_id=ac84d06d3f438fe1 method=GET path=/docs status=200 duration_ms=0
 time=2026-10-18T18:25:05.095+05:30 level=INFO msg=request request_id=702a4846106e8ec2 method=GET path=/openapi.json status=200 duration_ms=0
 time=2026-10-18T18:25:05.133+05:30 level=INFO msg=request request_id=c81ec9e14ed1e539 method=GET path=/favicon.ico status=404 duration_ms=0
+time=2026-10-23T01:56:11.454+05:30 level=INFO msg="shutting down"
+time=2026-10-25T17:38:56.776+05:30 level=INFO msg="netbanking listening" addr=:8002 base_url=http://localhost:8002 db=netbanking.db payment_ttl=15m0s down_banks=[BKID]
+time=2026-10-25T18:50:40.745+05:30 level=INFO msg="netbanking listening" addr=:8002 base_url=http://localhost:8002 db=netbanking.db payment_ttl=15m0s down_banks=[BKID]
+time=2026-10-25T18:50:40.747+05:30 level=ERROR msg="netbanking stopped" error="listen tcp :8002: bind: address already in use"
+exit status 1

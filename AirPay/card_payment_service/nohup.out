@@ -6,3 +6,13 @@ INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     127.0.0.1:53112 - "GET /docs HTTP/1.1" 200 OK
 INFO:     127.0.0.1:53112 - "GET /openapi.json HTTP/1.1" 200 OK
+warning: `VIRTUAL_ENV=/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+INFO:     Will watch for changes in these directories: ['/Users/shantanu/B/AirTribe/PythonC22/AirPay/card_payment_service']
+INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+INFO:     Started reloader process [32592] using WatchFiles
+INFO:     Started server process [32596]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:53408 - "POST /api/v1/payments HTTP/1.1" 200 OK
+INFO:     Will watch for changes in these directories: ['/Users/shantanu/B/AirTribe/PythonC22/AirPay/card_payment_service']
+ERROR:    [Errno 48] Address already in use

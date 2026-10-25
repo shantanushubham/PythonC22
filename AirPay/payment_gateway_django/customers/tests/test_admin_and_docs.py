@@ -96,6 +96,15 @@ class DocsTests(ApiTestCase):
         self.assertEqual(operations[("/api/v1/customers/me/api-keys/{key_id}", "get")], "getAPIKey")
         self.assertEqual(operations[("/api/v1/customers/me/api-keys/{key_id}", "delete")], "revokeAPIKey")
         self.assertEqual(operations[("/api/v1/payments/whoami", "get")], "paymentWhoAmI")
+        self.assertEqual(operations[("/api/v1/transactions", "post")], "createTransaction")
+        self.assertEqual(operations[("/api/v1/transactions", "get")], "listTransactions")
+        self.assertEqual(operations[("/api/v1/customers/me/transactions", "get")], "listMyTransactions")
+        self.assertEqual(operations[("/api/v1/customers/me/bank-accounts", "get")], "listBankAccounts")
+        self.assertEqual(operations[("/api/v1/customers/me/bank-accounts", "post")], "addBankAccount")
+        self.assertEqual(operations[("/api/v1/customers/me/balance", "get")], "getBalance")
+        self.assertEqual(operations[("/api/v1/customers/me/settle", "post")], "settleBalance")
+        self.assertEqual(operations[("/api/v1/customers/me/payouts", "get")], "listPayouts")
+        self.assertEqual(operations[("/api/v1/customers/me/payouts", "post")], "requestPayout")
         self.assertNotIn(("/api/v1/customers/me", "put"), operations)
 
     def test_login_documents_email_and_password_and_never_returns_a_password(self):
@@ -124,11 +133,18 @@ class DocsTests(ApiTestCase):
 
         me = schema["paths"]["/api/v1/customers/me"]["get"]
         whoami = schema["paths"]["/api/v1/payments/whoami"]["get"]
+        create = schema["paths"]["/api/v1/transactions"]["post"]
+        mine = schema["paths"]["/api/v1/customers/me/transactions"]["get"]
+        balance = schema["paths"]["/api/v1/customers/me/balance"]["get"]
         login = schema["paths"]["/api/v1/auth/login"]["post"]
         self.assertIn({jwt_name: []}, me["security"])
+        self.assertIn({jwt_name: []}, balance["security"])
+        self.assertIn({jwt_name: []}, mine["security"])
         self.assertNotIn({api_name: []}, me.get("security", []))
         self.assertIn({api_name: []}, whoami["security"])
+        self.assertIn({api_name: []}, create["security"])
         self.assertNotIn({jwt_name: []}, whoami.get("security", []))
+        self.assertNotIn({jwt_name: []}, create.get("security", []))
         self.assertNotIn(jwt_name, str(login.get("security", "")))
 
     def test_create_api_key_documents_the_secret_and_list_does_not(self):

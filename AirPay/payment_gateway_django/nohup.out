@@ -1,0 +1,1458 @@
+Watching for file changes with StatReloader
+[25/Oct/2026 13:25:29] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:25:59] "POST /api/v1/auth/login HTTP/1.1" 200 582
+[25/Oct/2026 13:25:59] "GET /api/v1/customers/me HTTP/1.1" 200 228
+[25/Oct/2026 13:25:59] "GET /api/v1/customers/me/balance HTTP/1.1" 200 75
+[25/Oct/2026 13:25:59] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:25:59] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 2
+[25/Oct/2026 13:25:59] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 1647
+[25/Oct/2026 13:25:59] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 2
+[25/Oct/2026 13:25:59] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 2
+[25/Oct/2026 13:25:59] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:25:59] "GET /api/v1/customers/me/api-keys HTTP/1.1" 200 273
+[25/Oct/2026 13:25:59] "GET /api/v1/customers/me/transactions/badcf796-8044-429e-b9cb-794a948e4a2e HTTP/1.1" 200 544
+[25/Oct/2026 13:25:59] "GET /api/v1/customers/me/transactions/589d1d07-1ed4-44ba-adca-a92628ec42d6 HTTP/1.1" 200 560
+[25/Oct/2026 13:26:00] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 1675
+[25/Oct/2026 13:26:00] "GET /api/v1/customers/me/balance HTTP/1.1" 200 75
+[25/Oct/2026 13:26:00] "GET /api/v1/customers/me/transactions/589d1d07-1ed4-44ba-adca-a92628ec42d6 HTTP/1.1" 200 560
+[25/Oct/2026 13:26:05] "GET /api/v1/customers/me/transactions/589d1d07-1ed4-44ba-adca-a92628ec42d6 HTTP/1.1" 200 560
+[25/Oct/2026 13:26:10] "GET /api/v1/customers/me/transactions/589d1d07-1ed4-44ba-adca-a92628ec42d6 HTTP/1.1" 200 560
+[25/Oct/2026 13:26:10] "POST /api/v1/auth/refresh HTTP/1.1" 200 582
+[25/Oct/2026 13:26:10] "GET /api/v1/customers/me HTTP/1.1" 200 228
+[25/Oct/2026 13:26:10] "GET /api/v1/customers/me HTTP/1.1" 200 228
+[25/Oct/2026 13:26:10] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:26:10] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 2
+[25/Oct/2026 13:26:10] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:26:40] "POST /api/v1/auth/login HTTP/1.1" 200 582
+[25/Oct/2026 13:26:40] "POST /api/v1/auth/refresh HTTP/1.1" 200 582
+[25/Oct/2026 13:26:40] "GET /api/v1/customers/me HTTP/1.1" 200 228
+[25/Oct/2026 13:26:40] "GET /api/v1/customers/me HTTP/1.1" 200 228
+[25/Oct/2026 13:26:40] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:26:40] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 2
+[25/Oct/2026 13:26:40] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:26:40] "GET /api/v1/health HTTP/1.1" 200 58
+Bad Request: /api/v1/customers/me/bank-accounts
+[25/Oct/2026 13:27:04] "POST /api/v1/customers/me/bank-accounts HTTP/1.1" 400 119
+[25/Oct/2026 13:27:09] "POST /api/v1/customers/me/bank-accounts HTTP/1.1" 201 244
+[25/Oct/2026 13:27:09] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 246
+[25/Oct/2026 13:27:10] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:27:10] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:27:18] "GET /api/v1/customers/me/balance HTTP/1.1" 200 75
+[25/Oct/2026 13:27:18] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 2
+[25/Oct/2026 13:27:18] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 246
+[25/Oct/2026 13:27:19] "POST /api/v1/customers/me/settle HTTP/1.1" 200 370
+[25/Oct/2026 13:27:19] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 258
+[25/Oct/2026 13:27:25] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 2
+[25/Oct/2026 13:27:25] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 246
+[25/Oct/2026 13:27:25] "GET /api/v1/customers/me/balance HTTP/1.1" 200 77
+Bad Request: /api/v1/customers/me/payouts
+[25/Oct/2026 13:27:27] "POST /api/v1/customers/me/payouts HTTP/1.1" 400 155
+[25/Oct/2026 13:27:28] "POST /api/v1/customers/me/payouts HTTP/1.1" 201 376
+[25/Oct/2026 13:27:28] "GET /api/v1/customers/me/balance HTTP/1.1" 200 77
+[25/Oct/2026 13:27:28] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 378
+[25/Oct/2026 13:27:36] "POST /api/v1/customers/me/api-keys HTTP/1.1" 201 346
+[25/Oct/2026 13:27:36] "GET /api/v1/payments/whoami HTTP/1.1" 200 254
+[25/Oct/2026 13:27:36] "GET /api/v1/transactions HTTP/1.1" 200 1675
+[25/Oct/2026 13:27:36] "GET /api/v1/transactions HTTP/1.1" 200 1675
+[25/Oct/2026 13:27:38] "GET /api/v1/customers/me/balance HTTP/1.1" 200 77
+[25/Oct/2026 13:27:38] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 378
+[25/Oct/2026 13:27:38] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 246
+[25/Oct/2026 13:27:40] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:27:40] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:27:58] "GET /api/v1/payments/whoami HTTP/1.1" 200 254
+[25/Oct/2026 13:27:58] "GET /api/v1/transactions HTTP/1.1" 200 1675
+[25/Oct/2026 13:27:58] "GET /api/v1/payments/whoami HTTP/1.1" 200 254
+[25/Oct/2026 13:27:58] "GET /api/v1/transactions HTTP/1.1" 200 1675
+[25/Oct/2026 13:27:59] "POST /api/v1/transactions HTTP/1.1" 201 572
+[25/Oct/2026 13:27:59] "GET /api/v1/transactions HTTP/1.1" 200 2248
+[25/Oct/2026 13:28:10] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:28:10] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:28:11] "POST /api/v1/transactions HTTP/1.1" 201 561
+[25/Oct/2026 13:28:11] "GET /api/v1/transactions HTTP/1.1" 200 2810
+[25/Oct/2026 13:28:22] "POST /api/v1/auth/refresh HTTP/1.1" 200 582
+[25/Oct/2026 13:28:22] "GET /api/v1/customers/me HTTP/1.1" 200 228
+[25/Oct/2026 13:28:23] "GET /api/v1/customers/me HTTP/1.1" 200 228
+[25/Oct/2026 13:28:23] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:28:23] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 2810
+[25/Oct/2026 13:28:23] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:28:23] "POST /api/v1/auth/refresh HTTP/1.1" 200 582
+[25/Oct/2026 13:28:23] "GET /api/v1/customers/me/transactions/7864d6b1-afc3-48af-9bac-6b8a0391a923 HTTP/1.1" 200 537
+[25/Oct/2026 13:28:23] "GET /api/v1/customers/me HTTP/1.1" 200 228
+[25/Oct/2026 13:28:23] "GET /api/v1/customers/me HTTP/1.1" 200 228
+[25/Oct/2026 13:28:23] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:28:23] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 246
+[25/Oct/2026 13:28:23] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:28:33] "GET /api/v1/payments/whoami HTTP/1.1" 200 254
+[25/Oct/2026 13:28:33] "GET /api/v1/transactions HTTP/1.1" 200 2786
+[25/Oct/2026 13:28:33] "GET /api/v1/payments/whoami HTTP/1.1" 200 254
+[25/Oct/2026 13:28:33] "GET /api/v1/transactions HTTP/1.1" 200 2786
+[25/Oct/2026 13:28:39] "POST /api/v1/transactions HTTP/1.1" 201 510
+[25/Oct/2026 13:28:39] "GET /api/v1/transactions HTTP/1.1" 200 3297
+[25/Oct/2026 13:28:41] "GET /api/v1/transactions/ee4dc1c9-d865-4d55-a8c8-387eb1822b60 HTTP/1.1" 200 510
+[25/Oct/2026 13:28:43] "GET /api/v1/transactions/ee4dc1c9-d865-4d55-a8c8-387eb1822b60 HTTP/1.1" 200 537
+[25/Oct/2026 13:28:49] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 3324
+[25/Oct/2026 13:28:49] "GET /api/v1/customers/me/transactions/589d1d07-1ed4-44ba-adca-a92628ec42d6 HTTP/1.1" 200 560
+[25/Oct/2026 13:28:53] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:28:53] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:28:54] "GET /api/v1/customers/me/transactions/589d1d07-1ed4-44ba-adca-a92628ec42d6 HTTP/1.1" 200 560
+[25/Oct/2026 13:28:59] "GET /api/v1/customers/me/transactions/589d1d07-1ed4-44ba-adca-a92628ec42d6 HTTP/1.1" 200 560
+[25/Oct/2026 13:29:04] "GET /api/v1/customers/me HTTP/1.1" 200 228
+[25/Oct/2026 13:29:04] "GET /api/v1/customers/me HTTP/1.1" 200 228
+[25/Oct/2026 13:29:04] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:29:04] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 3324
+[25/Oct/2026 13:29:04] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:29:04] "GET /api/v1/customers/me/transactions/589d1d07-1ed4-44ba-adca-a92628ec42d6 HTTP/1.1" 200 560
+[25/Oct/2026 13:29:04] "GET /api/v1/customers/me HTTP/1.1" 200 228
+[25/Oct/2026 13:29:04] "GET /api/v1/customers/me HTTP/1.1" 200 228
+[25/Oct/2026 13:29:04] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:29:04] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 246
+[25/Oct/2026 13:29:04] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:29:09] "GET /api/v1/customers/me/transactions/589d1d07-1ed4-44ba-adca-a92628ec42d6 HTTP/1.1" 200 560
+[25/Oct/2026 13:29:13] "GET /api/v1/customers/me/api-keys HTTP/1.1" 200 572
+[25/Oct/2026 13:29:15] "POST /api/v1/customers/me/api-keys HTTP/1.1" 201 332
+[25/Oct/2026 13:29:15] "GET /api/v1/customers/me/api-keys HTTP/1.1" 200 832
+[25/Oct/2026 13:29:16] "GET /api/v1/payments/whoami HTTP/1.1" 200 254
+[25/Oct/2026 13:29:34] "GET /api/v1/health HTTP/1.1" 200 58
+Not Found: /api-keys
+[25/Oct/2026 13:29:35] "GET /api-keys HTTP/1.1" 404 3055
+[25/Oct/2026 13:29:42] "POST /api/v1/auth/refresh HTTP/1.1" 200 582
+[25/Oct/2026 13:29:42] "GET /api/v1/customers/me HTTP/1.1" 200 228
+[25/Oct/2026 13:29:42] "GET /api/v1/customers/me HTTP/1.1" 200 228
+[25/Oct/2026 13:29:42] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:29:42] "GET /api/v1/customers/me/api-keys HTTP/1.1" 200 857
+[25/Oct/2026 13:29:42] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:29:43] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:29:48] "POST /api/v1/auth/refresh HTTP/1.1" 200 582
+[25/Oct/2026 13:29:48] "GET /api/v1/customers/me HTTP/1.1" 200 228
+[25/Oct/2026 13:29:48] "GET /api/v1/customers/me HTTP/1.1" 200 228
+[25/Oct/2026 13:29:48] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:29:48] "GET /api/v1/customers/me/api-keys HTTP/1.1" 200 857
+[25/Oct/2026 13:29:48] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:29:55] "DELETE /api/v1/customers/me/api-keys/ef473cbe-585c-46a7-981e-6459812c6462 HTTP/1.1" 204 0
+[25/Oct/2026 13:29:55] "GET /api/v1/customers/me/api-keys HTTP/1.1" 200 883
+Unauthorized: /api/v1/customers/me/balance
+Unauthorized: /api/v1/customers/me/transactions
+[25/Oct/2026 13:30:07] "GET /api/v1/customers/me/balance HTTP/1.1" 401 70
+Unauthorized: /api/v1/customers/me/settlements
+[25/Oct/2026 13:30:07] "GET /api/v1/customers/me/transactions HTTP/1.1" 401 70
+[25/Oct/2026 13:30:07] "GET /api/v1/customers/me/settlements HTTP/1.1" 401 70
+Unauthorized: /api/v1/customers/me/payouts
+[25/Oct/2026 13:30:07] "GET /api/v1/customers/me/payouts HTTP/1.1" 401 70
+Unauthorized: /api/v1/customers/me/bank-accounts
+[25/Oct/2026 13:30:07] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 401 70
+[25/Oct/2026 13:30:07] "POST /api/v1/auth/refresh HTTP/1.1" 200 582
+[25/Oct/2026 13:30:07] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 3324
+[25/Oct/2026 13:30:07] "GET /api/v1/customers/me/balance HTTP/1.1" 200 77
+[25/Oct/2026 13:30:07] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 258
+[25/Oct/2026 13:30:07] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 246
+[25/Oct/2026 13:30:07] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 378
+[25/Oct/2026 13:30:12] "GET /api/v1/customers/me/balance HTTP/1.1" 200 77
+[25/Oct/2026 13:30:12] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 378
+[25/Oct/2026 13:30:12] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 3324
+[25/Oct/2026 13:30:12] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 246
+[25/Oct/2026 13:30:12] "GET /api/v1/customers/me/api-keys HTTP/1.1" 200 883
+[25/Oct/2026 13:30:12] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 258
+[25/Oct/2026 13:30:12] "GET /api/v1/customers/me/transactions/589d1d07-1ed4-44ba-adca-a92628ec42d6 HTTP/1.1" 200 560
+[25/Oct/2026 13:30:17] "GET /api/v1/customers/me/transactions/589d1d07-1ed4-44ba-adca-a92628ec42d6 HTTP/1.1" 200 560
+[25/Oct/2026 13:30:18] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:30:22] "GET /api/v1/customers/me/transactions/589d1d07-1ed4-44ba-adca-a92628ec42d6 HTTP/1.1" 200 560
+[25/Oct/2026 13:30:27] "GET /api/v1/customers/me/transactions/589d1d07-1ed4-44ba-adca-a92628ec42d6 HTTP/1.1" 200 560
+[25/Oct/2026 13:30:32] "GET /api/v1/customers/me/transactions/589d1d07-1ed4-44ba-adca-a92628ec42d6 HTTP/1.1" 200 560
+[25/Oct/2026 13:30:37] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 3324
+[25/Oct/2026 13:30:37] "GET /api/v1/customers/me/balance HTTP/1.1" 200 77
+[25/Oct/2026 13:30:37] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 246
+[25/Oct/2026 13:30:37] "GET /api/v1/customers/me/api-keys HTTP/1.1" 200 883
+[25/Oct/2026 13:30:37] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 378
+[25/Oct/2026 13:30:37] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 258
+[25/Oct/2026 13:30:37] "GET /api/v1/customers/me/transactions/589d1d07-1ed4-44ba-adca-a92628ec42d6 HTTP/1.1" 200 560
+[25/Oct/2026 13:30:42] "GET /api/v1/customers/me/transactions/589d1d07-1ed4-44ba-adca-a92628ec42d6 HTTP/1.1" 200 560
+[25/Oct/2026 13:30:43] "POST /api/v1/auth/logout HTTP/1.1" 204 0
+Unauthorized: /api/v1/auth/refresh
+[25/Oct/2026 13:30:44] "POST /api/v1/auth/refresh HTTP/1.1" 401 50
+Bad Request: /api/v1/customers
+[25/Oct/2026 13:30:46] "POST /api/v1/customers HTTP/1.1" 400 261
+[25/Oct/2026 13:32:04] "POST /api/v1/auth/login HTTP/1.1" 200 582
+[25/Oct/2026 13:32:04] "GET /api/v1/customers/me HTTP/1.1" 200 228
+[25/Oct/2026 13:32:04] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:32:04] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:32:05] "GET /api/v1/customers/me/balance HTTP/1.1" 200 77
+[25/Oct/2026 13:32:05] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 3324
+[25/Oct/2026 13:32:05] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 258
+[25/Oct/2026 13:32:05] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 378
+[25/Oct/2026 13:32:05] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 246
+[25/Oct/2026 13:32:05] "GET /api/v1/customers/me/api-keys HTTP/1.1" 200 883
+[25/Oct/2026 13:32:05] "GET /api/v1/customers/me/transactions/589d1d07-1ed4-44ba-adca-a92628ec42d6 HTTP/1.1" 200 560
+[25/Oct/2026 13:32:10] "GET /api/v1/customers/me/transactions/589d1d07-1ed4-44ba-adca-a92628ec42d6 HTTP/1.1" 200 560
+[25/Oct/2026 13:32:15] "GET /api/v1/customers/me/transactions/589d1d07-1ed4-44ba-adca-a92628ec42d6 HTTP/1.1" 200 560
+[25/Oct/2026 13:32:19] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 3324
+[25/Oct/2026 13:32:19] "GET /api/v1/customers/me/transactions/589d1d07-1ed4-44ba-adca-a92628ec42d6 HTTP/1.1" 200 560
+[25/Oct/2026 13:32:25] "GET /api/v1/customers/me/api-keys HTTP/1.1" 200 883
+[25/Oct/2026 13:32:34] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:32:39] "GET /api/v1/customers/me/balance HTTP/1.1" 200 77
+[25/Oct/2026 13:32:39] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 246
+[25/Oct/2026 13:32:39] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 378
+[25/Oct/2026 13:32:51] "POST /api/v1/auth/logout HTTP/1.1" 204 0
+Unauthorized: /api/v1/auth/login
+[25/Oct/2026 13:33:14] "POST /api/v1/auth/login HTTP/1.1" 401 80
+[25/Oct/2026 13:33:23] "POST /api/v1/auth/login HTTP/1.1" 200 582
+[25/Oct/2026 13:33:23] "GET /api/v1/customers/me HTTP/1.1" 200 238
+[25/Oct/2026 13:33:23] "GET /api/v1/customers/me/balance HTTP/1.1" 200 80
+[25/Oct/2026 13:33:23] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 2
+[25/Oct/2026 13:33:24] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 1156
+[25/Oct/2026 13:33:24] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:33:24] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 501
+[25/Oct/2026 13:33:24] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 2
+[25/Oct/2026 13:33:24] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:33:24] "GET /api/v1/customers/me/api-keys HTTP/1.1" 200 275
+[25/Oct/2026 13:33:32] "GET /api/v1/customers/me/balance HTTP/1.1" 200 80
+[25/Oct/2026 13:33:32] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 2
+[25/Oct/2026 13:33:32] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 501
+[25/Oct/2026 13:33:37] "GET /api/v1/customers/me/api-keys HTTP/1.1" 200 275
+[25/Oct/2026 13:33:54] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:34:01] "GET /api/v1/payments/whoami HTTP/1.1" 200 249
+[25/Oct/2026 13:34:01] "GET /api/v1/payments/whoami HTTP/1.1" 200 249
+[25/Oct/2026 13:34:01] "GET /api/v1/transactions HTTP/1.1" 200 1156
+[25/Oct/2026 13:34:01] "GET /api/v1/transactions HTTP/1.1" 200 1156
+[25/Oct/2026 13:34:23] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:34:54] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:35:24] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:35:53] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:36:22] "POST /api/v1/transactions HTTP/1.1" 201 611
+[25/Oct/2026 13:36:22] "GET /api/v1/transactions HTTP/1.1" 200 1768
+[25/Oct/2026 13:36:23] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:36:53] "POST /api/v1/transactions HTTP/1.1" 201 568
+[25/Oct/2026 13:36:53] "GET /api/v1/transactions HTTP/1.1" 200 2337
+[25/Oct/2026 13:36:53] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:37:19] "POST /api/v1/auth/refresh HTTP/1.1" 200 582
+[25/Oct/2026 13:37:19] "GET /api/v1/customers/me HTTP/1.1" 200 238
+[25/Oct/2026 13:37:19] "GET /api/v1/customers/me HTTP/1.1" 200 238
+[25/Oct/2026 13:37:19] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:37:19] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 2337
+[25/Oct/2026 13:37:19] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:37:19] "GET /api/v1/customers/me/transactions/fed935eb-6d37-41a9-9066-a4305aa6dd0a HTTP/1.1" 200 550
+[25/Oct/2026 13:37:41] "GET /api/v1/customers/me/transactions/fed935eb-6d37-41a9-9066-a4305aa6dd0a HTTP/1.1" 200 550
+[25/Oct/2026 13:37:43] "GET /api/v1/customers/me/balance HTTP/1.1" 200 82
+[25/Oct/2026 13:37:43] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 501
+[25/Oct/2026 13:37:43] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 2
+[25/Oct/2026 13:37:46] "GET /api/v1/customers/me/balance HTTP/1.1" 200 82
+[25/Oct/2026 13:37:46] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 2
+[25/Oct/2026 13:37:47] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 2319
+[25/Oct/2026 13:37:47] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 2
+[25/Oct/2026 13:37:47] "GET /api/v1/customers/me/balance HTTP/1.1" 200 82
+[25/Oct/2026 13:37:47] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 2
+[25/Oct/2026 13:37:47] "GET /api/v1/customers/me/api-keys HTTP/1.1" 200 275
+[25/Oct/2026 13:37:47] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 501
+[25/Oct/2026 13:37:49] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:37:50] "GET /api/v1/customers/me/balance HTTP/1.1" 200 82
+[25/Oct/2026 13:37:50] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 501
+[25/Oct/2026 13:37:50] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 2
+[25/Oct/2026 13:37:52] "GET /api/v1/customers/me/balance HTTP/1.1" 200 82
+[25/Oct/2026 13:37:52] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 2319
+[25/Oct/2026 13:37:52] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 2
+[25/Oct/2026 13:37:52] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 2
+[25/Oct/2026 13:37:52] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 501
+[25/Oct/2026 13:37:52] "GET /api/v1/customers/me/api-keys HTTP/1.1" 200 275
+[25/Oct/2026 13:38:04] "GET /api/v1/customers/me/balance HTTP/1.1" 200 82
+[25/Oct/2026 13:38:04] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 501
+[25/Oct/2026 13:38:04] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 2
+[25/Oct/2026 13:38:19] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:38:26] "GET /api/v1/customers/me/balance HTTP/1.1" 200 82
+[25/Oct/2026 13:38:26] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 2
+[25/Oct/2026 13:38:36] "POST /api/v1/customers/me/settle HTTP/1.1" 200 382
+[25/Oct/2026 13:38:36] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 265
+[25/Oct/2026 13:38:41] "GET /api/v1/customers/me/balance HTTP/1.1" 200 79
+[25/Oct/2026 13:38:41] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 265
+[25/Oct/2026 13:38:46] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 2319
+[25/Oct/2026 13:38:49] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:38:55] "GET /api/v1/customers/me/transactions/fed935eb-6d37-41a9-9066-a4305aa6dd0a HTTP/1.1" 200 550
+[25/Oct/2026 13:39:11] "GET /api/v1/customers/me/transactions/fed935eb-6d37-41a9-9066-a4305aa6dd0a HTTP/1.1" 200 550
+[25/Oct/2026 13:39:19] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:39:43] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 2319
+[25/Oct/2026 13:39:49] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:40:19] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:40:32] "GET /api/v1/customers/me/balance HTTP/1.1" 200 79
+[25/Oct/2026 13:40:32] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 2
+[25/Oct/2026 13:40:32] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 501
+[25/Oct/2026 13:40:33] "GET /api/v1/payments/whoami HTTP/1.1" 200 249
+[25/Oct/2026 13:40:33] "GET /api/v1/transactions HTTP/1.1" 200 2319
+[25/Oct/2026 13:40:33] "GET /api/v1/payments/whoami HTTP/1.1" 200 249
+[25/Oct/2026 13:40:33] "GET /api/v1/transactions HTTP/1.1" 200 2319
+[25/Oct/2026 13:40:33] "GET /api/v1/customers/me/balance HTTP/1.1" 200 79
+[25/Oct/2026 13:40:33] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 501
+[25/Oct/2026 13:40:33] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 265
+[25/Oct/2026 13:40:34] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 2319
+[25/Oct/2026 13:40:35] "GET /api/v1/transactions HTTP/1.1" 200 2319
+[25/Oct/2026 13:40:35] "GET /api/v1/payments/whoami HTTP/1.1" 200 249
+[25/Oct/2026 13:40:35] "GET /api/v1/payments/whoami HTTP/1.1" 200 249
+[25/Oct/2026 13:40:35] "GET /api/v1/transactions HTTP/1.1" 200 2319
+[25/Oct/2026 13:40:49] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:40:57] "POST /api/v1/transactions HTTP/1.1" 201 571
+[25/Oct/2026 13:40:57] "GET /api/v1/transactions HTTP/1.1" 200 2891
+[25/Oct/2026 13:41:23] "POST /api/v1/auth/refresh HTTP/1.1" 200 582
+[25/Oct/2026 13:41:23] "GET /api/v1/customers/me HTTP/1.1" 200 238
+[25/Oct/2026 13:41:23] "GET /api/v1/customers/me HTTP/1.1" 200 238
+[25/Oct/2026 13:41:23] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:41:23] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 2891
+[25/Oct/2026 13:41:23] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:41:23] "GET /api/v1/customers/me/transactions/63d76950-3fdb-4c3f-8b7a-947744ee199e HTTP/1.1" 200 555
+[25/Oct/2026 13:41:35] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 2875
+[25/Oct/2026 13:41:37] "GET /api/v1/customers/me/transactions/63d76950-3fdb-4c3f-8b7a-947744ee199e HTTP/1.1" 200 555
+[25/Oct/2026 13:41:45] "GET /api/v1/customers/me/transactions/63d76950-3fdb-4c3f-8b7a-947744ee199e HTTP/1.1" 200 555
+[25/Oct/2026 13:41:46] "GET /api/v1/payments/whoami HTTP/1.1" 200 249
+[25/Oct/2026 13:41:46] "GET /api/v1/transactions HTTP/1.1" 200 2875
+[25/Oct/2026 13:41:46] "GET /api/v1/payments/whoami HTTP/1.1" 200 249
+[25/Oct/2026 13:41:46] "GET /api/v1/transactions HTTP/1.1" 200 2875
+[25/Oct/2026 13:41:53] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:41:53] "GET /api/v1/customers/me/balance HTTP/1.1" 200 79
+[25/Oct/2026 13:41:53] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 2875
+[25/Oct/2026 13:41:53] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 2
+[25/Oct/2026 13:41:53] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 265
+[25/Oct/2026 13:41:53] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 501
+[25/Oct/2026 13:41:53] "GET /api/v1/customers/me/api-keys HTTP/1.1" 200 275
+[25/Oct/2026 13:42:20] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 2875
+[25/Oct/2026 13:42:23] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:42:27] "GET /api/v1/payments/whoami HTTP/1.1" 200 249
+[25/Oct/2026 13:42:27] "GET /api/v1/transactions HTTP/1.1" 200 2875
+[25/Oct/2026 13:42:27] "GET /api/v1/payments/whoami HTTP/1.1" 200 249
+[25/Oct/2026 13:42:27] "GET /api/v1/transactions HTTP/1.1" 200 2875
+[25/Oct/2026 13:42:32] "GET /api/v1/customers/me/balance HTTP/1.1" 200 79
+[25/Oct/2026 13:42:32] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 501
+[25/Oct/2026 13:42:32] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 2
+[25/Oct/2026 13:42:38] "GET /api/v1/customers/me/balance HTTP/1.1" 200 79
+[25/Oct/2026 13:42:38] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 501
+[25/Oct/2026 13:42:38] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 265
+[25/Oct/2026 13:42:53] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:43:23] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:43:53] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:44:23] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:44:53] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:45:26] "GET /api/v1/health HTTP/1.1" 200 58
+/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/payments/models.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+October 25, 2026 - 13:20:44
+Django version 6.1.2, using settings 'config.settings'
+Starting WSGI development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/6.1/howto/deployment/
+Watching for file changes with StatReloader
+[25/Oct/2026 13:46:26] "GET /api/v1/health HTTP/1.1" 200 58
+/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/payments/wallet.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 1 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): payments.
+Run 'python manage.py migrate' to apply them.
+October 25, 2026 - 13:46:25
+Django version 6.1.2, using settings 'config.settings'
+Starting WSGI development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/6.1/howto/deployment/
+Watching for file changes with StatReloader
+/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/payments/admin.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 1 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): payments.
+Run 'python manage.py migrate' to apply them.
+October 25, 2026 - 13:46:47
+Django version 6.1.2, using settings 'config.settings'
+Starting WSGI development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/6.1/howto/deployment/
+Watching for file changes with StatReloader
+[25/Oct/2026 13:47:18] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:47:20] "GET /api/v1/customers/me/balance HTTP/1.1" 200 79
+[25/Oct/2026 13:47:20] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 2
+[25/Oct/2026 13:47:20] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 501
+[25/Oct/2026 13:47:20] "GET /api/v1/payments/whoami HTTP/1.1" 200 249
+[25/Oct/2026 13:47:20] "GET /api/v1/payments/whoami HTTP/1.1" 200 249
+Internal Server Error: /api/v1/transactions
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 64, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 526, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 474, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 485, in raise_uncaught_exception
+    raise exc
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 523, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/payments/views.py", line 126, in get
+    return Response(TransactionSerializer(txns, many=True).data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 818, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 737, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 473, in __iter__
+    self._fetch_all()
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 2287, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 131, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1643, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+[25/Oct/2026 13:47:20] "GET /api/v1/transactions HTTP/1.1" 500 25111
+Internal Server Error: /api/v1/transactions
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 64, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 526, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 474, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 485, in raise_uncaught_exception
+    raise exc
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 523, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/payments/views.py", line 126, in get
+    return Response(TransactionSerializer(txns, many=True).data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 818, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 737, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 473, in __iter__
+    self._fetch_all()
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 2287, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 131, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1643, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+[25/Oct/2026 13:47:20] "GET /api/v1/transactions HTTP/1.1" 500 25111
+Internal Server Error: /api/v1/customers/me/transactions
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 64, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 526, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 474, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 485, in raise_uncaught_exception
+    raise exc
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 523, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/payments/views.py", line 178, in get
+    return Response(TransactionSerializer(txns, many=True).data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 818, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 737, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 473, in __iter__
+    self._fetch_all()
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 2287, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 131, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1643, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+[25/Oct/2026 13:47:21] "GET /api/v1/customers/me/transactions HTTP/1.1" 500 25168
+[25/Oct/2026 13:47:23] "GET /api/v1/health HTTP/1.1" 200 58
+Internal Server Error: /api/v1/customers/me/transactions
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 64, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 526, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 474, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 485, in raise_uncaught_exception
+    raise exc
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 523, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/payments/views.py", line 178, in get
+    return Response(TransactionSerializer(txns, many=True).data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 818, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 737, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 473, in __iter__
+    self._fetch_all()
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 2287, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 131, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1643, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+[25/Oct/2026 13:47:24] "GET /api/v1/customers/me/transactions HTTP/1.1" 500 25168
+[25/Oct/2026 13:47:25] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 2
+[25/Oct/2026 13:47:25] "GET /api/v1/customers/me/balance HTTP/1.1" 200 79
+[25/Oct/2026 13:47:25] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 501
+[25/Oct/2026 13:47:25] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 265
+[25/Oct/2026 13:47:25] "GET /api/v1/customers/me/api-keys HTTP/1.1" 200 275
+Internal Server Error: /api/v1/customers/me/transactions
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 64, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 526, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 474, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 485, in raise_uncaught_exception
+    raise exc
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 523, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/payments/views.py", line 178, in get
+    return Response(TransactionSerializer(txns, many=True).data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 818, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 737, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 473, in __iter__
+    self._fetch_all()
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 2287, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 131, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1643, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+[25/Oct/2026 13:47:25] "GET /api/v1/customers/me/transactions HTTP/1.1" 500 25156
+Internal Server Error: /api/v1/customers/me/transactions
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 64, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 526, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 474, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 485, in raise_uncaught_exception
+    raise exc
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 523, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/payments/views.py", line 178, in get
+    return Response(TransactionSerializer(txns, many=True).data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 818, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 737, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 473, in __iter__
+    self._fetch_all()
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 2287, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 131, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1643, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+[25/Oct/2026 13:47:25] "GET /api/v1/customers/me/transactions HTTP/1.1" 500 25168
+Internal Server Error: /api/v1/customers/me/transactions
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 64, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 526, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 474, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 485, in raise_uncaught_exception
+    raise exc
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 523, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/payments/views.py", line 178, in get
+    return Response(TransactionSerializer(txns, many=True).data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 818, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 737, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 473, in __iter__
+    self._fetch_all()
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 2287, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 131, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1643, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+[25/Oct/2026 13:47:26] "GET /api/v1/customers/me/transactions HTTP/1.1" 500 25168
+Internal Server Error: /api/v1/customers/me/transactions
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 64, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 526, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 474, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 485, in raise_uncaught_exception
+    raise exc
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 523, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/payments/views.py", line 178, in get
+    return Response(TransactionSerializer(txns, many=True).data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 818, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 737, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 473, in __iter__
+    self._fetch_all()
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 2287, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 131, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1643, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+[25/Oct/2026 13:47:26] "GET /api/v1/customers/me/transactions HTTP/1.1" 500 25168
+Internal Server Error: /api/v1/customers/me/transactions
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 64, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 526, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 474, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 485, in raise_uncaught_exception
+    raise exc
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 523, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/payments/views.py", line 178, in get
+    return Response(TransactionSerializer(txns, many=True).data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 818, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 737, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 473, in __iter__
+    self._fetch_all()
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 2287, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 131, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1643, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+[25/Oct/2026 13:47:26] "GET /api/v1/customers/me/transactions HTTP/1.1" 500 25168
+Internal Server Error: /api/v1/customers/me/transactions
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 64, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 526, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 474, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 485, in raise_uncaught_exception
+    raise exc
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 523, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/payments/views.py", line 178, in get
+    return Response(TransactionSerializer(txns, many=True).data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 818, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 737, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 473, in __iter__
+    self._fetch_all()
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 2287, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 131, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1643, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+[25/Oct/2026 13:47:26] "GET /api/v1/customers/me/transactions HTTP/1.1" 500 25168
+Internal Server Error: /api/v1/customers/me/transactions
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 64, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 526, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 474, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 485, in raise_uncaught_exception
+    raise exc
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 523, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/payments/views.py", line 178, in get
+    return Response(TransactionSerializer(txns, many=True).data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 818, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 737, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 473, in __iter__
+    self._fetch_all()
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 2287, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 131, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1643, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+django.db.utils.ProgrammingError: column payments_transaction.refunded_paise does not exist
+LINE 1: ..._bps", "payments_transaction"."commission_paise", "payments_...
+                                                             ^
+[25/Oct/2026 13:47:26] "GET /api/v1/customers/me/transactions HTTP/1.1" 500 25168
+[25/Oct/2026 13:47:53] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:48:23] "GET /api/v1/health HTTP/1.1" 200 58
+/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/config/settings.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 1 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): payments.
+Run 'python manage.py migrate' to apply them.
+October 25, 2026 - 13:47:12
+Django version 6.1.2, using settings 'config.settings'
+Starting WSGI development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/6.1/howto/deployment/
+Watching for file changes with StatReloader
+Unauthorized: /api/v1/customers/me/refunds
+[25/Oct/2026 13:48:34] "GET /api/v1/customers/me/refunds HTTP/1.1" 401 75
+[25/Oct/2026 13:48:53] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:49:08] "POST /api/v1/auth/refresh HTTP/1.1" 200 582
+[25/Oct/2026 13:49:08] "GET /api/v1/customers/me HTTP/1.1" 200 238
+[25/Oct/2026 13:49:08] "GET /api/v1/customers/me HTTP/1.1" 200 238
+[25/Oct/2026 13:49:08] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:49:08] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 3196
+[25/Oct/2026 13:49:08] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:49:38] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:50:06] "POST /api/v1/auth/refresh HTTP/1.1" 200 582
+[25/Oct/2026 13:50:06] "GET /api/v1/customers/me HTTP/1.1" 200 238
+[25/Oct/2026 13:50:06] "GET /api/v1/customers/me HTTP/1.1" 200 238
+[25/Oct/2026 13:50:06] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:50:06] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 3196
+[25/Oct/2026 13:50:07] "GET /api/v1/health HTTP/1.1" 200 58
+Not Found: /
+[25/Oct/2026 13:50:15] "GET / HTTP/1.1" 404 3013
+[25/Oct/2026 13:50:23] "POST /api/v1/customers HTTP/1.1" 201 225
+Not Found: /api/v1/auth/token
+[25/Oct/2026 13:50:23] "POST /api/v1/auth/token HTTP/1.1" 404 9240
+[25/Oct/2026 13:50:30] "POST /api/v1/customers HTTP/1.1" 201 225
+[25/Oct/2026 13:50:30] "POST /api/v1/auth/login HTTP/1.1" 200 582
+[25/Oct/2026 13:50:30] "POST /api/v1/customers/me/api-keys HTTP/1.1" 201 318
+[25/Oct/2026 13:50:30] "POST /api/v1/transactions HTTP/1.1" 201 632
+[25/Oct/2026 13:50:30] "POST /api/v1/transactions HTTP/1.1" 201 629
+[25/Oct/2026 13:50:30] "POST /api/v1/transactions HTTP/1.1" 201 633
+[25/Oct/2026 13:50:37] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:50:39] "POST /api/v1/auth/login HTTP/1.1" 200 582
+[25/Oct/2026 13:50:39] "GET /api/v1/customers/me HTTP/1.1" 200 225
+[25/Oct/2026 13:50:39] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:50:40] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:50:40] "GET /api/v1/customers/me/balance HTTP/1.1" 200 75
+[25/Oct/2026 13:50:40] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 1898
+[25/Oct/2026 13:50:40] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 2
+[25/Oct/2026 13:50:40] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 2
+[25/Oct/2026 13:50:40] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 2
+[25/Oct/2026 13:50:40] "GET /api/v1/customers/me/refunds HTTP/1.1" 200 2
+[25/Oct/2026 13:50:40] "GET /api/v1/customers/me/api-keys HTTP/1.1" 200 272
+[25/Oct/2026 13:50:46] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 1898
+[25/Oct/2026 13:50:50] "GET /api/v1/customers/me/transactions/5ed63b82-af95-4345-983f-f56c8e1439eb HTTP/1.1" 200 632
+[25/Oct/2026 13:50:50] "GET /api/v1/customers/me/transactions/5ed63b82-af95-4345-983f-f56c8e1439eb/refunds HTTP/1.1" 200 2
+[25/Oct/2026 13:51:07] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:51:09] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:51:11] "POST /api/v1/customers/me/transactions/5ed63b82-af95-4345-983f-f56c8e1439eb/refunds HTTP/1.1" 201 572
+[25/Oct/2026 13:51:11] "GET /api/v1/customers/me/transactions/5ed63b82-af95-4345-983f-f56c8e1439eb HTTP/1.1" 200 636
+[25/Oct/2026 13:51:11] "GET /api/v1/customers/me/transactions/5ed63b82-af95-4345-983f-f56c8e1439eb/refunds HTTP/1.1" 200 574
+[25/Oct/2026 13:51:19] "POST /api/v1/customers/me/transactions/5ed63b82-af95-4345-983f-f56c8e1439eb/refunds HTTP/1.1" 201 572
+[25/Oct/2026 13:51:19] "GET /api/v1/customers/me/transactions/5ed63b82-af95-4345-983f-f56c8e1439eb HTTP/1.1" 200 636
+[25/Oct/2026 13:51:19] "GET /api/v1/customers/me/transactions/5ed63b82-af95-4345-983f-f56c8e1439eb/refunds HTTP/1.1" 200 1147
+[25/Oct/2026 13:51:25] "GET /api/v1/customers/me/refunds HTTP/1.1" 200 1147
+[25/Oct/2026 13:51:34] "POST /api/v1/auth/login HTTP/1.1" 200 582
+Bad Request: /api/v1/customers/me/bank-accounts
+[25/Oct/2026 13:51:34] "POST /api/v1/customers/me/bank-accounts HTTP/1.1" 400 116
+[25/Oct/2026 13:51:37] "POST /api/v1/auth/login HTTP/1.1" 200 582
+[25/Oct/2026 13:51:37] "POST /api/v1/customers/me/bank-accounts HTTP/1.1" 201 245
+[25/Oct/2026 13:51:37] "POST /api/v1/customers/me/settle HTTP/1.1" 200 371
+[25/Oct/2026 13:51:37] "GET /api/v1/customers/me/balance HTTP/1.1" 200 75
+[25/Oct/2026 13:51:37] "POST /api/v1/customers/me/payouts HTTP/1.1" 201 378
+[25/Oct/2026 13:51:37] "GET /api/v1/customers/me/balance HTTP/1.1" 200 69
+[25/Oct/2026 13:51:37] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:51:39] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:51:42] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 1902
+[25/Oct/2026 13:51:43] "GET /api/v1/customers/me/transactions/661b4779-3c67-41ab-94f9-bb5f3f1a34ef HTTP/1.1" 200 629
+[25/Oct/2026 13:51:43] "GET /api/v1/customers/me/transactions/661b4779-3c67-41ab-94f9-bb5f3f1a34ef/refunds HTTP/1.1" 200 2
+Bad Request: /api/v1/customers/me/transactions/661b4779-3c67-41ab-94f9-bb5f3f1a34ef/refunds
+[25/Oct/2026 13:51:44] "POST /api/v1/customers/me/transactions/661b4779-3c67-41ab-94f9-bb5f3f1a34ef/refunds HTTP/1.1" 400 170
+Bad Request: /api/v1/customers/me/transactions/661b4779-3c67-41ab-94f9-bb5f3f1a34ef/refunds
+[25/Oct/2026 13:51:57] "POST /api/v1/customers/me/transactions/661b4779-3c67-41ab-94f9-bb5f3f1a34ef/refunds HTTP/1.1" 400 170
+[25/Oct/2026 13:52:03] "POST /api/v1/auth/login HTTP/1.1" 200 582
+[25/Oct/2026 13:52:03] "GET /api/v1/customers/me/balance HTTP/1.1" 200 69
+[25/Oct/2026 13:52:03] "GET /api/v1/customers/me/refunds HTTP/1.1" 200 1147
+[25/Oct/2026 13:52:03] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 1902
+[25/Oct/2026 13:52:07] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:52:09] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:52:10] "POST /api/v1/auth/login HTTP/1.1" 200 582
+[25/Oct/2026 13:52:10] "POST /api/v1/customers/me/api-keys HTTP/1.1" 201 315
+[25/Oct/2026 13:52:10] "POST /api/v1/transactions HTTP/1.1" 201 620
+[25/Oct/2026 13:52:12] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 2523
+[25/Oct/2026 13:52:13] "GET /api/v1/customers/me/transactions/2565c886-65a1-4290-af52-a912b22db0db HTTP/1.1" 200 620
+[25/Oct/2026 13:52:13] "GET /api/v1/customers/me/transactions/2565c886-65a1-4290-af52-a912b22db0db/refunds HTTP/1.1" 200 2
+[25/Oct/2026 13:52:14] "POST /api/v1/customers/me/transactions/2565c886-65a1-4290-af52-a912b22db0db/refunds HTTP/1.1" 201 550
+[25/Oct/2026 13:52:15] "GET /api/v1/customers/me/transactions/2565c886-65a1-4290-af52-a912b22db0db HTTP/1.1" 200 620
+[25/Oct/2026 13:52:15] "GET /api/v1/customers/me/transactions/2565c886-65a1-4290-af52-a912b22db0db/refunds HTTP/1.1" 200 552
+[25/Oct/2026 13:52:19] "GET /api/v1/customers/me/balance HTTP/1.1" 200 69
+[25/Oct/2026 13:52:19] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 2523
+[25/Oct/2026 13:52:19] "GET /api/v1/customers/me/refunds HTTP/1.1" 200 1698
+[25/Oct/2026 13:52:19] "GET /api/v1/customers/me/bank-accounts HTTP/1.1" 200 247
+[25/Oct/2026 13:52:19] "GET /api/v1/customers/me/settlements HTTP/1.1" 200 260
+[25/Oct/2026 13:52:19] "GET /api/v1/customers/me/payouts HTTP/1.1" 200 380
+[25/Oct/2026 13:52:19] "GET /api/v1/customers/me/api-keys HTTP/1.1" 200 540
+[25/Oct/2026 13:52:37] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:52:39] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:53:07] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:53:09] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:53:18] "POST /api/v1/auth/logout HTTP/1.1" 204 0
+/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/payments/rails/http.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 1 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): payments.
+Run 'python manage.py migrate' to apply them.
+October 25, 2026 - 13:48:29
+Django version 6.1.2, using settings 'config.settings'
+Starting WSGI development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/6.1/howto/deployment/
+Watching for file changes with StatReloader
+[25/Oct/2026 13:53:23] "POST /api/v1/auth/refresh HTTP/1.1" 200 582
+[25/Oct/2026 13:53:23] "GET /api/v1/customers/me HTTP/1.1" 200 238
+[25/Oct/2026 13:53:23] "GET /api/v1/customers/me HTTP/1.1" 200 238
+[25/Oct/2026 13:53:23] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:53:23] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 3196
+[25/Oct/2026 13:53:23] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:53:24] "GET /api/v1/customers/me/refunds HTTP/1.1" 200 2
+[25/Oct/2026 13:53:26] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 3196
+[25/Oct/2026 13:53:30] "GET /api/v1/customers/me/transactions/e220037c-9f4c-4a76-a815-50ca4efbcb53 HTTP/1.1" 200 677
+[25/Oct/2026 13:53:30] "GET /api/v1/customers/me/transactions/e220037c-9f4c-4a76-a815-50ca4efbcb53/refunds HTTP/1.1" 200 2
+[25/Oct/2026 13:53:33] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 3196
+[25/Oct/2026 13:53:36] "GET /api/v1/customers/me/transactions/e220037c-9f4c-4a76-a815-50ca4efbcb53 HTTP/1.1" 200 677
+[25/Oct/2026 13:53:36] "GET /api/v1/customers/me/transactions/e220037c-9f4c-4a76-a815-50ca4efbcb53/refunds HTTP/1.1" 200 2
+[25/Oct/2026 13:53:39] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 3196
+[25/Oct/2026 13:53:42] "GET /api/v1/customers/me/transactions/51e82ad3-ba35-440a-a34c-3ce18a356657 HTTP/1.1" 200 638
+[25/Oct/2026 13:53:42] "GET /api/v1/customers/me/transactions/51e82ad3-ba35-440a-a34c-3ce18a356657/refunds HTTP/1.1" 200 2
+[25/Oct/2026 13:53:46] "POST /api/v1/auth/login HTTP/1.1" 200 582
+[25/Oct/2026 13:53:46] "POST /api/v1/customers/me/api-keys HTTP/1.1" 201 324
+[25/Oct/2026 13:53:46] "POST /api/v1/transactions HTTP/1.1" 201 616
+[25/Oct/2026 13:53:46] "POST /api/v1/transactions HTTP/1.1" 201 616
+[25/Oct/2026 13:53:46] "POST /api/v1/transactions HTTP/1.1" 201 563
+[25/Oct/2026 13:53:46] "POST /api/v1/transactions HTTP/1.1" 201 620
+[25/Oct/2026 13:53:53] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:53:54] "GET /api/v1/payments/whoami HTTP/1.1" 200 249
+[25/Oct/2026 13:53:54] "GET /api/v1/transactions HTTP/1.1" 200 3196
+[25/Oct/2026 13:53:54] "GET /api/v1/payments/whoami HTTP/1.1" 200 249
+[25/Oct/2026 13:53:54] "GET /api/v1/transactions HTTP/1.1" 200 3196
+[25/Oct/2026 13:53:57] "POST /api/v1/auth/login HTTP/1.1" 200 582
+[25/Oct/2026 13:53:57] "POST /api/v1/customers/me/api-keys HTTP/1.1" 201 325
+[25/Oct/2026 13:53:57] "POST /api/v1/transactions HTTP/1.1" 201 649
+[25/Oct/2026 13:53:57] "POST /api/v1/transactions HTTP/1.1" 201 632
+Bad Request: /api/v1/transactions
+[25/Oct/2026 13:53:57] "POST /api/v1/transactions HTTP/1.1" 400 147
+[25/Oct/2026 13:53:57] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 6225
+[25/Oct/2026 13:53:57] "GET /api/v1/customers/me/transactions/6ebe6c57-2a18-4109-9133-e5e523194094 HTTP/1.1" 200 620
+[25/Oct/2026 13:53:57] "GET /api/v1/customers/me/transactions/3159b48b-049c-4422-b52f-3492e69d22cb HTTP/1.1" 200 590
+[25/Oct/2026 13:54:23] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:54:53] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:54:58] "POST /api/v1/transactions HTTP/1.1" 201 586
+[25/Oct/2026 13:54:58] "GET /api/v1/transactions HTTP/1.1" 200 3783
+[25/Oct/2026 13:55:00] "GET /api/v1/transactions/d16a3b74-3b55-4575-8bb7-a0f5d383ddce HTTP/1.1" 200 586
+[25/Oct/2026 13:55:02] "GET /api/v1/transactions/d16a3b74-3b55-4575-8bb7-a0f5d383ddce HTTP/1.1" 200 614
+[25/Oct/2026 13:55:09] "GET /api/v1/customers/me/refunds HTTP/1.1" 200 2
+[25/Oct/2026 13:55:13] "GET /api/v1/customers/me/transactions HTTP/1.1" 200 3811
+[25/Oct/2026 13:55:14] "GET /api/v1/customers/me/transactions/d16a3b74-3b55-4575-8bb7-a0f5d383ddce HTTP/1.1" 200 614
+[25/Oct/2026 13:55:14] "GET /api/v1/customers/me/transactions/d16a3b74-3b55-4575-8bb7-a0f5d383ddce/refunds HTTP/1.1" 200 2
+[25/Oct/2026 13:55:20] "POST /api/v1/customers/me/transactions/d16a3b74-3b55-4575-8bb7-a0f5d383ddce/refunds HTTP/1.1" 201 516
+[25/Oct/2026 13:55:20] "GET /api/v1/customers/me/transactions/d16a3b74-3b55-4575-8bb7-a0f5d383ddce HTTP/1.1" 200 614
+[25/Oct/2026 13:55:20] "GET /api/v1/customers/me/transactions/d16a3b74-3b55-4575-8bb7-a0f5d383ddce/refunds HTTP/1.1" 200 518
+[25/Oct/2026 13:55:22] "GET /api/v1/customers/me/refunds HTTP/1.1" 200 518
+[25/Oct/2026 13:55:23] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:55:23] "GET /api/v1/customers/me/transactions/d16a3b74-3b55-4575-8bb7-a0f5d383ddce HTTP/1.1" 200 614
+[25/Oct/2026 13:55:23] "GET /api/v1/customers/me/transactions/d16a3b74-3b55-4575-8bb7-a0f5d383ddce/refunds HTTP/1.1" 200 518
+[25/Oct/2026 13:55:53] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:56:23] "GET /api/v1/health HTTP/1.1" 200 58

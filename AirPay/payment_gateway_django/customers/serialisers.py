@@ -9,7 +9,8 @@ from django.utils import timezone
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from customers.models import APIKey, Customer, normalize_email
+from customers.accounts import ACCOUNT_NUMBER_PATTERN, IFSC_PATTERN, normalize_account_number, normalize_ifsc
+from customers.models import APIKey, BankAccount, Customer, normalize_email
 
 EMAIL_TAKEN = "A customer with this email already exists."
 
@@ -181,4 +182,51 @@ class CreateAPIKeySerializer(serializers.Serializer):
                 f"expires_at cannot be more than {settings.API_KEY_MAX_LIFETIME_DAYS} days from now."
             )
         return value
+
+
+class BankAccountSerializer(serializers.ModelSerializer):
+    """An account as the API shows it. The full account number is never included."""
+
+    account_number_last_four = serializers.CharField(source="last_four")
+
+    class Meta:
+        model = BankAccount
+        fields = [
+            "id",
+            "account_holder_name",
+            "account_number_last_four",
+            "ifsc",
+            "bank_name",
+            "account_type",
+            "is_default",
+            "created_at",
+        ]
+        read_only_fields = fields
+
+
+class AddBankAccountSerializer(serializers.Serializer):
+    account_holder_name = serializers.CharField(max_length=150)
+    account_number = serializers.CharField(max_length=32, write_only=True)
+    ifsc = serializers.CharField(max_length=11)
+    bank_name = serializers.CharField(max_length=150)
+    account_type = serializers.ChoiceField(choices=BankAccount.AccountType.choices)
+    is_default = serializers.BooleanField(required=False, default=False)
+
+    def validate_account_number(self, value: str) -> str:
+        number = normalize_account_number(value)
+        if not ACCOUNT_NUMBER_PATTERN.fullmatch(number):
+            raise serializers.ValidationError("account_number must be 9 to 18 digits")
+        return number
+
+    def validate_ifsc(self, value: str) -> str:
+        code = normalize_ifsc(value)
+        if not IFSC_PATTERN.fullmatch(code):
+            raise serializers.ValidationError("ifsc is not a valid Indian IFSC")
+        return code
+
+
+class UpdateBankAccountSerializer(serializers.Serializer):
+    account_holder_name = serializers.CharField(max_length=150, required=False)
+    bank_name = serializers.CharField(max_length=150, required=False)
+    is_default = serializers.BooleanField(required=False)
 

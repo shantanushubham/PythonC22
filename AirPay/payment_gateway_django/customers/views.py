@@ -1,4 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError, transaction
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import OpenApiResponse, extend_schema, extend_schema_view
 from rest_framework import generics, status
@@ -11,9 +12,12 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from core.serialisers import ErrorSerializer, ValidationErrorSerializer
-from customers.models import APIKey
+
+from customers.models import APIKey, BankAccount
 from customers.serialisers import (
     APIKeySerializer,
+    AddBankAccountSerializer,
+    BankAccountSerializer,
     CreateAPIKeySerializer,
     CreatedAPIKeySerializer,
     CustomerSerializer,
@@ -22,6 +26,7 @@ from customers.serialisers import (
     RefreshTokenSerializer,
     RegisterSerializer,
     TokenPairSerializer,
+    UpdateBankAccountSerializer,
 )
 from customers.throttles import LoginRateThrottle
 
@@ -221,4 +226,114 @@ class APIKeyDetailView(APIView):
     )
     def delete(self, request, key_id):
         self._key(request, key_id).revoke()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# --- Bank accounts. JWT only. -------------------------------------------------------------
+
+ACCOUNT_NOT_FOUND = OpenApiResponse(ErrorSerializer, description="No bank account with that id.")
+
+
+class BankAccountListCreateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        operation_id="listBankAccounts",
+        tags=["Bank accounts"],
+        summary="List your bank accounts",
+        description="The full account number is never included. Use `account_number_last_four` and `ifsc`.",
+        responses={200: BankAccountSerializer(many=True), 401: UNAUTHORIZED},
+    )
+    def get(self, request):
+        accounts = BankAccount.objects.filter(customer=request.user, revoked_at__isnull=True)
+        return Response(BankAccountSerializer(accounts, many=True).data)
+
+    @extend_schema(
+        operation_id="addBankAccount",
+        tags=["Bank accounts"],
+        summary="Add a bank account",
+        request=AddBankAccountSerializer,
+        responses={201: BankAccountSerializer, 400: BAD_REQUEST, 401: UNAUTHORIZED},
+    )
+    def post(self, request):
+        serializer = AddBankAccountSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        if BankAccount.at_limit(request.user):
+            raise ValidationError(
+                {"non_field_errors": ["You already have the maximum number of bank accounts."]}
+            )
+        try:
+            account = BankAccount.add(request.user, **serializer.validated_data)
+        except IntegrityError:
+            raise ValidationError(
+                {"account_number": ["This bank account is already registered."]}
+            ) from None
+        return Response(BankAccountSerializer(account).data, status=status.HTTP_201_CREATED)
+
+
+class BankAccountDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def _account(self, request, account_id):
+        return get_object_or_404(
+            BankAccount, pk=account_id, customer=request.user, revoked_at__isnull=True
+        )
+
+    @extend_schema(
+        operation_id="getBankAccount",
+        tags=["Bank accounts"],
+        summary="Get one of your bank accounts",
+        responses={200: BankAccountSerializer, 401: UNAUTHORIZED, 404: ACCOUNT_NOT_FOUND},
+    )
+    def get(self, request, account_id):
+        return Response(BankAccountSerializer(self._account(request, account_id)).data)
+
+    @extend_schema(
+        operation_id="updateBankAccount",
+        tags=["Bank accounts"],
+        summary="Update the label or default flag",
+        description="The account number and IFSC cannot change. Add a new account instead.",
+        request=UpdateBankAccountSerializer,
+        responses={200: BankAccountSerializer, 400: BAD_REQUEST, 401: UNAUTHORIZED, 404: ACCOUNT_NOT_FOUND},
+    )
+    def patch(self, request, account_id):
+        account = self._account(request, account_id)
+        serializer = UpdateBankAccountSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        if not data:
+            return Response(BankAccountSerializer(account).data)
+        with transaction.atomic():
+            if data.get("is_default") is True:
+                BankAccount.objects.filter(customer=request.user, is_default=True).update(is_default=False)
+                account.is_default = True
+            elif data.get("is_default") is False and account.is_default:
+                raise ValidationError(
+                    {"is_default": ["Set another account as default instead of unsetting this one."]}
+                )
+            if "account_holder_name" in data:
+                account.account_holder_name = data["account_holder_name"]
+            if "bank_name" in data:
+                account.bank_name = data["bank_name"]
+            account.save()
+        return Response(BankAccountSerializer(account).data)
+
+    @extend_schema(
+        operation_id="removeBankAccount",
+        tags=["Bank accounts"],
+        summary="Remove a bank account",
+        description="The account can no longer be used for payouts. Existing payouts keep a snapshot.",
+        responses={204: OpenApiResponse(description="Removed."), 401: UNAUTHORIZED, 404: ACCOUNT_NOT_FOUND},
+    )
+    def delete(self, request, account_id):
+        account = self._account(request, account_id)
+        account.revoke()
+        replacement = (
+            BankAccount.objects.filter(customer=request.user, revoked_at__isnull=True)
+            .order_by("-created_at")
+            .first()
+        )
+        if replacement and not BankAccount.objects.filter(customer=request.user, is_default=True).exists():
+            replacement.is_default = True
+            replacement.save(update_fields=["is_default"])
         return Response(status=status.HTTP_204_NO_CONTENT)

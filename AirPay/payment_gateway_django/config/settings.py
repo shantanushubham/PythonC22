@@ -145,6 +145,17 @@ API_KEY_PEPPER = os.environ.get("API_KEY_PEPPER", "")
 API_KEY_MAX_PER_CUSTOMER = int(os.environ.get("API_KEY_MAX_PER_CUSTOMER", "20"))
 API_KEY_MAX_LIFETIME_DAYS = int(os.environ.get("API_KEY_MAX_LIFETIME_DAYS", "365"))
 
+# Bank accounts and the ledger. BANK_ACCOUNT_KEY encrypts account numbers (Fernet).
+# When empty, a key is derived from SECRET_KEY.
+BANK_ACCOUNT_KEY = os.environ.get("BANK_ACCOUNT_KEY", "")
+BANK_ACCOUNT_MAX_PER_CUSTOMER = int(os.environ.get("BANK_ACCOUNT_MAX_PER_CUSTOMER", "10"))
+
+# Supporting payment rails. The gateway calls these; it does not authorize cards itself.
+CARD_PAYMENT_URL = os.environ.get("CARD_PAYMENT_URL", "http://localhost:8001")
+NETBANKING_URL = os.environ.get("NETBANKING_URL", "http://localhost:8002")
+UPI_PAYMENT_URL = os.environ.get("UPI_PAYMENT_URL", "http://localhost:8003")
+RAIL_TIMEOUT_SECONDS = float(os.environ.get("RAIL_TIMEOUT_SECONDS", "10"))
+
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
@@ -210,7 +221,13 @@ SPECTACULAR_SETTINGS = {
         {"name": "Customers", "description": "Sign up and manage your account."},
         {"name": "Auth", "description": "Log in and manage JWT access and refresh tokens."},
         {"name": "API keys", "description": "Create and revoke keys used to call the payment API."},
-        {"name": "Payments", "description": "Payment operations. These take an API key, not a JWT."},
+        {"name": "Payments", "description": "Identify the customer behind an API key."},
+        {"name": "Transactions", "description": "Collect payments through card, UPI or netbanking. These take an API key."},
+        {"name": "Bank accounts", "description": "Beneficiary accounts for payouts."},
+        {"name": "Balance", "description": "Settled and unsettled amounts."},
+        {"name": "Payouts", "description": "Bank-transfer payouts from the settled balance."},
+        {"name": "Refunds", "description": "Send money back to a payer, in full or in part."},
     ],
     "COMPONENT_SPLIT_REQUEST": True,
+    "ENUM_NAME_OVERRIDES": {"RefundStatusEnum": "payments.models.Refund.Status"},
 }

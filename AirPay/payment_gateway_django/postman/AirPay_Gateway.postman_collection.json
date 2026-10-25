@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "7c9e1a2b-4d3f-4a80-9c12-5e6f7a8b9c0d",
     "name": "AirPay Payment Gateway",
-    "description": "Django REST API for AirPay.\n\n**Suggested order**\n\n1. Health → Register → Login (saves JWT tokens into the environment)\n2. Get / Update me\n3. Create API key (saves `api_key` and `api_key_id`; the secret is shown this once)\n4. List / Get API key\n5. Payments Whoami (uses `X-API-Key`, not the JWT)\n6. Refresh token (replaces both tokens; keep the new refresh token)\n7. Revoke API key and Logout last — they are destructive\n\nDashboard endpoints send `Authorization: Bearer {{access_token}}` from the collection. Payment endpoints send `X-API-Key: {{api_key}}` instead. The two credentials are not interchangeable.\n\nRegister will return 400 if `{{email}}` is already taken. Skip it and go to Login.\n\nStart the app with `uv run python manage.py runserver 8000` and select **AirPay Gateway — Local** as the environment.",
+    "description": "Django REST API for AirPay.\n\n**Suggested order**\n\n1. Health \u2192 Register \u2192 Login (saves JWT tokens)\n2. Get / Update me\n3. Create API key (saves `api_key`)\n4. Add a bank account (saves `bank_account_id`)\n5. Create a **card** transaction with `X-API-Key` (credits **unsettled** only on SUCCESS). The card service must be running on port 8001.\n6. Get balance \u2192 Settle (choose a bank account and an amount; moves unsettled to **settled**)\n7. Request a payout (debits settled, mock bank transfer)\n8. Refunds: refund part of the card transaction, then the rest (JWT; commission is returned in proportion). Run these before paying out, or the money may be gone.\n9. Payments Whoami\n10. Refresh token\n11. Revoke API key and Logout last \u2014 they are destructive\n\nDashboard endpoints send `Authorization: Bearer {{access_token}}`. Transactions and Whoami send `X-API-Key: {{api_key}}`.\n\nUPI and netbanking start as PENDING and do not credit the wallet until you poll Get transaction after they succeed.\n\nA payout to an account number ending in `0000` fails and the settled balance is restored. A refund ending in 99 paise is declined by the mock bank and moves no money.\n\nRegister returns 400 if `{{email}}` is already taken \u2014 skip to Login.\nStart the app with `uv run python manage.py runserver 8000`.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -36,7 +36,9 @@
             }
           ],
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
             "header": [],
             "url": "{{base_url}}/api/v1/health",
@@ -64,7 +66,7 @@
                   "    pm.expect(body).to.not.have.property('password');",
                   "  });",
                   "} else if (pm.response.code === 400) {",
-                  "  pm.test('email already registered — skip to Login', function () {",
+                  "  pm.test('email already registered \u2014 skip to Login', function () {",
                   "    pm.expect(pm.response.json().success).to.eql(false);",
                   "  });",
                   "}"
@@ -73,9 +75,16 @@
             }
           ],
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\",\n  \"first_name\": \"{{first_name}}\",\n  \"last_name\": \"{{last_name}}\",\n  \"company_name\": \"{{company_name}}\",\n  \"company_address\": \"{{company_address}}\"\n}"
@@ -104,9 +113,16 @@
             }
           ],
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
@@ -135,9 +151,16 @@
             }
           ],
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}"
@@ -163,9 +186,16 @@
             }
           ],
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}"
@@ -223,7 +253,12 @@
           ],
           "request": {
             "method": "PATCH",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"first_name\": \"{{first_name}}\",\n  \"last_name\": \"{{last_name}}\",\n  \"company_name\": \"{{company_name}}\",\n  \"company_address\": \"{{company_address}}\"\n}"
@@ -270,7 +305,12 @@
           ],
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"Postman\",\n  \"expires_at\": \"{{api_key_expires_at}}\"\n}"
@@ -357,8 +397,129 @@
       ]
     },
     {
-      "name": "Payments",
+      "name": "Transactions",
       "item": [
+        {
+          "name": "Create card transaction",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "postman-pay-1"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/transactions",
+            "description": "API key, not JWT. Routes to the card service. Credits **unsettled** only when status is SUCCESS. Needs the card service on port 8001. Visa 4111111111111111 is approved.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"method\": \"CARD\",\n  \"amount\": \"1500.50\",\n  \"currency\": \"INR\",\n  \"reference\": \"order_1001\",\n  \"card\": {\n    \"card_type\": \"credit\",\n    \"number\": \"4111111111111111\",\n    \"expiry_month\": 12,\n    \"expiry_year\": 2030,\n    \"cvv\": \"123\",\n    \"holder_name\": \"Jane Doe\"\n  }\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('card transaction stored', function () {",
+                  "  pm.expect([200, 201]).to.include(pm.response.code);",
+                  "  const body = pm.response.json();",
+                  "  pm.environment.set('transaction_id', body.id);",
+                  "  pm.expect(body.instrument).to.not.have.property('number');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create UPI transaction",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/transactions",
+            "description": "Starts a UPI collect. Status is PENDING and the wallet is not credited until you poll Get transaction after the payer approves. Needs the UPI service on port 8003.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"method\": \"UPI\",\n  \"amount\": \"1500.50\",\n  \"payer_vpa\": \"jane.doe@okaxis\",\n  \"description\": \"Order 1001\",\n  \"reference\": \"order_1001\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "  pm.environment.set('transaction_id', pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create netbanking transaction",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/transactions",
+            "description": "Starts netbanking and returns redirect_url. Open that URL, log in at the bank page, then poll Get transaction. Needs the netbanking service on port 8002.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"method\": \"NETBANKING\",\n  \"amount\": \"1500.50\",\n  \"bank_code\": \"HDFC\",\n  \"return_url\": \"https://shop.example.com/return\",\n  \"reference\": \"order_1001\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "  pm.environment.set('transaction_id', pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
         {
           "name": "Whoami",
           "event": [
@@ -378,14 +539,463 @@
             }
           ],
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
             "header": [
-              { "key": "X-API-Key", "value": "{{api_key}}" }
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}"
+              }
             ],
             "url": "{{base_url}}/api/v1/payments/whoami",
-            "description": "Confirms the API key. A JWT is not accepted here (`Authorization: Api-Key {{api_key}}` also works). Create an API key first. Later payment endpoints will sit next to this one and use the same header."
+            "description": "Confirms the API key. A JWT is not accepted here (`Authorization: Api-Key {{api_key}}` also works). Create an API key first. The same header is used on /api/v1/transactions."
           }
+        },
+        {
+          "name": "Get transaction",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{api_key}}"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/transactions/{{transaction_id}}",
+            "description": "If the transaction is still PENDING, AirPay asks the rail again and credits the wallet if it succeeded.",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('found', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Bank accounts",
+      "item": [
+        {
+          "name": "Add bank account",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/customers/me/bank-accounts",
+            "description": "Needs a JWT. The full account number is shown only in the request. List and get return the last four digits.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"account_holder_name\": \"{{company_name}}\",\n  \"account_number\": \"{{account_number}}\",\n  \"ifsc\": \"{{ifsc}}\",\n  \"bank_name\": \"HDFC Bank\",\n  \"account_type\": \"CURRENT\",\n  \"is_default\": true\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('account added', function () {",
+                  "  pm.response.to.have.status(201);",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.not.have.property('account_number');",
+                  "  pm.environment.set('bank_account_id', body.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List bank accounts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/customers/me/bank-accounts",
+            "description": "Active accounts only. Full account numbers are never included."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('listed', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get bank account",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/customers/me/bank-accounts/{{bank_account_id}}",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('one account', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Remove bank account",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{base_url}}/api/v1/customers/me/bank-accounts/{{bank_account_id}}",
+            "description": "Run payouts first. Removing an account does not delete payout history."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('removed', function () { pm.response.to.have.status(204); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Balance",
+      "item": [
+        {
+          "name": "Get balance",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/customers/me/balance",
+            "description": "`unsettled` is captured money not yet available to pay out. `settled` is available for a bank transfer."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('has both amounts', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const b = pm.response.json();",
+                  "  pm.expect(b).to.have.keys('currency', 'unsettled', 'settled', 'total');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Settle",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/customers/me/settle",
+            "description": "Pick one of your bank accounts with `bank_account_id` and how much to settle with `amount`. Omit `amount` to settle the whole unsettled balance; an amount above the unsettled balance returns 400. In production this is a T+N job.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bank_account_id\": \"{{bank_account_id}}\",\n  \"amount\": \"500.00\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('settled', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json()).to.have.property('settled_now');",
+                  "  pm.expect(pm.response.json()).to.have.property('settlement');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Payouts",
+      "item": [
+        {
+          "name": "Request payout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "postman-po-1"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/customers/me/payouts",
+            "description": "Needs a JWT and a **settled** balance. Debits settled and sends a mock bank transfer. Account numbers ending in 0000 fail and the money is returned.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"200.00\",\n  \"bank_account_id\": \"{{bank_account_id}}\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('payout created', function () {",
+                  "  pm.expect([200, 201]).to.include(pm.response.code);",
+                  "  pm.environment.set('payout_id', pm.response.json().id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List payouts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/customers/me/payouts",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('listed', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get payout",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/customers/me/payouts/{{payout_id}}",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('found', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Refunds",
+      "description": "Send money back to a payer. Needs a JWT: an API key cannot refund. Run **Create card transaction** first; these use `{{transaction_id}}`.",
+      "item": [
+        {
+          "name": "Refund part of a payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/customers/me/transactions/{{transaction_id}}/refunds",
+            "description": "Refunds `amount` of a successful payment. AirPay returns its commission in proportion. Comes out of unsettled first, then settled. Idempotency-Key is a new GUID each run.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"100.00\",\n  \"reason\": \"Customer returned the item\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('refund created', function () {",
+                  "  pm.expect([200, 201]).to.include(pm.response.code);",
+                  "  pm.environment.set('refund_id', pm.response.json().id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Refund declined by mock bank",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/customers/me/transactions/{{transaction_id}}/refunds",
+            "description": "The mock bank declines any amount ending in 99 paise. The refund is saved as FAILED, no money moves, and none of the refundable amount is used up.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"10.99\",\n  \"reason\": \"Declined on purpose\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('declined, not an error', function () {",
+                  "  pm.response.to.have.status(201);",
+                  "  pm.expect(pm.response.json().status).to.eql('FAILED');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Refund the rest of a payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/customers/me/transactions/{{transaction_id}}/refunds",
+            "description": "Leave `amount` out to refund everything not yet refunded. 422 if the payment is already fully refunded; 400 if you no longer have the money (it was paid out).",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Order cancelled\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('refund created', function () {",
+                  "  pm.expect([200, 201]).to.include(pm.response.code);",
+                  "  pm.environment.set('refund_id', pm.response.json().id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List refunds of a payment",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/customers/me/transactions/{{transaction_id}}/refunds",
+            "description": "Newest first."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('listed', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List my refunds",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/customers/me/refunds",
+            "description": "Every refund you have made."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('listed', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get refund",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/customers/me/refunds/{{refund_id}}",
+            "description": "One refund, with the payment it belongs to."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('found', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         }
       ]
     },
@@ -409,10 +1019,15 @@
             }
           ],
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
             "header": [
-              { "key": "Accept", "value": "application/vnd.oai.openapi+json" }
+              {
+                "key": "Accept",
+                "value": "application/vnd.oai.openapi+json"
+              }
             ],
             "url": "{{base_url}}/api/schema/",
             "description": "Machine-readable OpenAPI 3 schema generated from the views."
@@ -434,7 +1049,9 @@
             }
           ],
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
             "header": [],
             "url": "{{base_url}}/api/docs/",

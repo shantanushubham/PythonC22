@@ -5,6 +5,15 @@ from django.contrib.auth.models import AbstractUser
 from django.db import IntegrityError, models, transaction
 from django.utils import timezone
 
+from customers.accounts import (
+    ACCOUNT_NUMBER_PATTERN,
+    IFSC_PATTERN,
+    account_fingerprint,
+    decrypt_account_number,
+    encrypt_account_number,
+    normalize_account_number,
+    normalize_ifsc,
+)
 from customers.crypto import generate
 
 
@@ -130,3 +139,100 @@ class APIKey(models.Model):
     @classmethod
     def at_limit(cls, customer: Customer) -> bool:
         return cls.active_count(customer) >= settings.API_KEY_MAX_PER_CUSTOMER
+
+
+class BankAccount(models.Model):
+    """A beneficiary account the customer can receive payouts into."""
+
+    class AccountType(models.TextChoices):
+        SAVINGS = "SAVINGS", "Savings"
+        CURRENT = "CURRENT", "Current"
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="bank_accounts")
+    account_holder_name = models.CharField(max_length=150)
+    # Last four digits only. The full number is in account_number_encrypted.
+    last_four = models.CharField(max_length=4)
+    ifsc = models.CharField(max_length=11)
+    bank_name = models.CharField(max_length=150)
+    account_type = models.CharField(max_length=16, choices=AccountType.choices)
+    account_number_encrypted = models.TextField()
+    fingerprint = models.CharField(max_length=64)
+    is_default = models.BooleanField(default=False)
+    revoked_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-is_default", "-created_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["customer", "fingerprint"],
+                name="unique_bank_account_per_customer",
+            ),
+        ]
+        indexes = [
+            models.Index(fields=["customer", "-created_at"]),
+        ]
+
+    def __str__(self):
+        return f"{self.ifsc} …{self.last_four}"
+
+    @property
+    def active(self) -> bool:
+        return self.revoked_at is None
+
+    def account_number(self) -> str:
+        return decrypt_account_number(self.account_number_encrypted)
+
+    def revoke(self):
+        if self.revoked_at is None:
+            self.revoked_at = timezone.now()
+            if self.is_default:
+                self.is_default = False
+            self.save(update_fields=["revoked_at", "is_default"])
+
+    @classmethod
+    def active_count(cls, customer: Customer) -> int:
+        return cls.objects.filter(customer=customer, revoked_at__isnull=True).count()
+
+    @classmethod
+    def at_limit(cls, customer: Customer) -> bool:
+        return cls.active_count(customer) >= settings.BANK_ACCOUNT_MAX_PER_CUSTOMER
+
+    @classmethod
+    def add(
+        cls,
+        customer: Customer,
+        *,
+        account_holder_name: str,
+        account_number: str,
+        ifsc: str,
+        bank_name: str,
+        account_type: str,
+        is_default: bool = False,
+    ) -> "BankAccount":
+        number = normalize_account_number(account_number)
+        code = normalize_ifsc(ifsc)
+        if not ACCOUNT_NUMBER_PATTERN.fullmatch(number):
+            raise ValueError("account_number must be 9 to 18 digits")
+        if not IFSC_PATTERN.fullmatch(code):
+            raise ValueError("ifsc is not a valid Indian IFSC")
+
+        make_default = is_default or cls.active_count(customer) == 0
+        account = cls(
+            customer=customer,
+            account_holder_name=account_holder_name.strip(),
+            last_four=number[-4:],
+            ifsc=code,
+            bank_name=bank_name.strip(),
+            account_type=account_type,
+            account_number_encrypted=encrypt_account_number(number),
+            fingerprint=account_fingerprint(code, number),
+            is_default=make_default,
+        )
+        with transaction.atomic():
+            if make_default:
+                cls.objects.filter(customer=customer, is_default=True).update(is_default=False)
+            account.save()
+        return account
+
