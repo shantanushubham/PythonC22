@@ -1,7 +1,8 @@
 # AirPay merchant dashboard
 
 The web app for AirPay customers (merchants). It talks to the Django gateway in
-`../payment_gateway_django` and covers every customer-facing API.
+`../payment_gateway_django` and covers every customer-facing API. How the gateway and the
+three rails work together: [system README](../README.md).
 
 React 19, TypeScript, Vite, React Router and Recharts. No UI framework: the styles are one
 CSS file with light and dark themes.

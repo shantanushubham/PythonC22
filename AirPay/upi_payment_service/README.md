@@ -8,6 +8,47 @@ It follows the same conventions as `card_payment_service`: `/api/v1` paths, snak
 fields, string amounts, an `Idempotency-Key` header, and the same success and error
 response shapes.
 
+How it is built, and why: [HIGH_LEVEL_DESIGN.md](HIGH_LEVEL_DESIGN.md). How it talks to
+the other AirPay services: [system README](../README.md).
+
+## High-level design
+
+UPI collect is **asynchronous**. The payer approves in their own app, so this service
+answers `201 PENDING` first and becomes `SUCCESS`, `FAILED` or `EXPIRED` a few seconds
+later. There is no customer-facing page: the "UPI app" is the clock.
+
+```mermaid
+flowchart LR
+    Gateway["AirPay gateway<br/>Django :8000"]
+    subgraph UPI["This service · Node + Express :8003"]
+        Ctl["Controllers"]
+        Svc["Services<br/>VPA · outcome · timing"]
+        Repo["Repository"]
+        DB[("SQLite")]
+        Ctl --> Svc --> Repo --> DB
+    end
+    Gateway -- "POST /api/v1/payments" --> Ctl
+    Gateway -- "GET /api/v1/payments/{id}<br/>poll while PENDING" --> Ctl
+```
+
+**How the design is approached.** The service does not run a timer to move a payment
+from `PENDING` to a final status. At **create** it already knows the outcome (from the
+payer VPA) and the time the payer "responds" (`resolvesAt`). At **read** it compares
+`now` to that time. Before it, the payment looks `PENDING`. After it, the stored
+outcome is shown.
+
+That choice has three effects: no background workers, the answer survives a restart
+(it is just stored data plus the clock), and tests move time forward instead of
+sleeping. The `Clock` is injected for that reason.
+
+The rest of the design matches the card service on purpose: controllers, services,
+a repository interface, a composition root (`container.ts`), rules as lists
+(`OutcomeRule`, `VpaCheck`), money as whole paise in `BigInt`, and contracts (Zod)
+as the single source for validation and OpenAPI.
+
+The sequence, the state machine, the data model and the trade-offs are in
+[HIGH_LEVEL_DESIGN.md](HIGH_LEVEL_DESIGN.md).
+
 ## Run it
 
 You need Node 22.13 or newer (the service uses the built-in `node:sqlite`).

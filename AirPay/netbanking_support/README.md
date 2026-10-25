@@ -7,6 +7,51 @@ login page, and later asks this service how the payment ended.
 It is a mock. It moves no money and checks no real credentials. The outcome is chosen by the
 customer ID typed on the login page, so every path can be tested.
 
+How it is built, and why: [HIGH_LEVEL_DESIGN.md](HIGH_LEVEL_DESIGN.md). How it talks to the
+other AirPay services: [system README](../README.md).
+
+## High-level design
+
+Netbanking is **redirect-based**. Unlike a card, the customer leaves the merchant's site and
+finishes at the bank, so this service has two faces: a JSON API for the gateway, and HTML
+pages for the customer's browser.
+
+```mermaid
+flowchart LR
+    Gateway["AirPay gateway<br/>Django :8000"]
+    Customer(["Customer's browser"])
+    subgraph NB["This service · Go :8002"]
+        API["JSON API<br/>/api/v1/payments"]
+        Pages["Bank pages<br/>/bank/{id}"]
+        Core["Services"]
+        DB[("SQLite")]
+        API --> Core
+        Pages --> Core
+        Core --> DB
+    end
+    Gateway -- "create / poll<br/>server to server" --> API
+    Customer -- "login form" --> Pages
+    Gateway -. "redirect_url" .-> Customer
+```
+
+**How the design is approached.** The gateway talks to the API. The customer talks to the
+pages. They share no session: the payment ID in the URL is the only link. The `status` in
+the return URL is only a hint (the customer can edit it). The answer to trust is always
+`GET /api/v1/payments/{id}`.
+
+A payment is `PENDING` until login, cancel or expiry finishes it. Every transition is one
+atomic statement, `UPDATE ... WHERE status = 'PENDING'`, so a double click, a cancel and
+an expiry check cannot overwrite each other. Expiry is applied when a payment is **read**,
+so there is no background job.
+
+The rest matches the other rails: controllers call services, services call a repository
+interface, `internal/app` is the only package that names concrete types, bank outcomes are
+a list of `AuthorizationRule`s, and money is whole paise.
+
+The full journey, the state machine, the data model and the security choices (no stored
+credentials, escaped templates, `http(s)`-only `return_url`) are in
+[HIGH_LEVEL_DESIGN.md](HIGH_LEVEL_DESIGN.md).
+
 ## Run
 
 ```bash

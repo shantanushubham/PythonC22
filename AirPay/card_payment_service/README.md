@@ -4,6 +4,8 @@ Mock card network for the AirPay payment gateway. The Django app sends card deta
 
 It speaks for Visa, Mastercard, Diners, American Express, and RuPay. No real network is contacted. Do not send real card numbers.
 
+How it is built, and why: [HIGH_LEVEL_DESIGN.md](HIGH_LEVEL_DESIGN.md). How it talks to the other AirPay services: [system README](../README.md).
+
 ## Run
 
 ```bash
@@ -13,14 +15,39 @@ uv run uvicorn app.main:app --reload --port 8001
 
 To use several workers, drop `--reload` and add `--workers 4`. All workers share the same database, so idempotency keys and `GET` lookups behave the same on every worker.
 
+## High-level design
+
+A card authorization is **synchronous**: the issuer's answer comes back in the same HTTP call. That is the whole difference from UPI and netbanking, where the customer has to do something and the result arrives later.
+
+```mermaid
+flowchart LR
+    Gateway["AirPay gateway<br/>Django :8000"]
+    subgraph Card["This service · FastAPI :8001"]
+        Ctl["Controllers<br/>HTTP only"]
+        Svc["Services<br/>validate · decide · idempotency"]
+        Repo["Repository<br/>interface"]
+        DB[("SQLite")]
+        Ctl --> Svc --> Repo --> DB
+    end
+    Gateway -- "POST /api/v1/payments" --> Ctl
+    Gateway -- "GET /api/v1/payments/{id}" --> Ctl
+```
+
+**How the design is approached.** Each request goes through three layers, and each layer only knows the one below it.
+
+- **Controllers** read the HTTP request and write the response. They hold no rules and catch no errors.
+- **Services** own the rules, one class each: card validation, the issuer's decline list, idempotency, and a coordinator (`PaymentService`) that only runs them in order.
+- **Repository** is an interface. SQLite is one implementation. Tests run the same checks against an in-memory fake, so either can stand in for the other.
+
+A new decline scenario is a new `DeclineRule`. A new card network is a new `NetworkProfile`. Neither change touches existing classes. `container.py` is the only file that names concrete types.
+
+A decline is a **result** (`402`, stored, replayable), not an error. A validation failure is a **bad request** (`400`, not stored), so a corrected retry can reuse the same `Idempotency-Key`.
+
+The diagrams, the pipeline, the data model and the trade-offs are in [HIGH_LEVEL_DESIGN.md](HIGH_LEVEL_DESIGN.md).
+
 ## Architecture
 
 A request passes through three layers. Each only knows the one below it, through an abstraction.
-
-```
-Controller  ->  Service  ->  Repository  ->  SQLite
-(HTTP)          (rules)      (interface)
-```
 
 | Layer | Files | Responsibility |
 | --- | --- | --- |

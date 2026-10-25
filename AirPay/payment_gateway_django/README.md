@@ -1,16 +1,65 @@
 # AirPay Payment Gateway (Django REST framework)
 
-The gateway API for AirPay. It will accept payments and route them to the supporting services
-that sit next to it:
+The gateway API for AirPay. It is the **front door and the book of record**: merchants sign up
+here, payments are routed from here to the three rail services, and the wallet, ledger,
+settlement, payouts and refunds all live here.
 
 | Service | Folder | Port |
 | --- | --- | --- |
 | Card payments (FastAPI, mock) | `../card_payment_service` | 8001 |
 | Netbanking (Go, mock) | `../netbanking_support` | 8002 |
-| UPI (Node, mock) | `../upi_payment_service` | see its README |
+| UPI (Node, mock) | `../upi_payment_service` | 8003 |
 
-So far it has the project skeleton, the customer module with JWT login, error handling, API
-docs and a health endpoint. The payment features go in new apps next to `customers`.
+How it is built, and why: [HIGH_LEVEL_DESIGN.md](HIGH_LEVEL_DESIGN.md). How the four services
+talk to each other: [system README](../README.md).
+
+## High-level design
+
+The gateway never decides whether a payment is good. The rail answers; the gateway records the
+answer and moves money.
+
+```mermaid
+flowchart LR
+    Dash["Dashboard :5173<br/>JWT"]
+    App["Merchant server<br/>X-API-Key"]
+    subgraph GW["This service · Django :8000"]
+        API["REST /api/v1"]
+        Biz["services · wallet · refunds"]
+        Adapters["rails/<br/>card · upi · netbanking"]
+        API --> Biz --> Adapters
+    end
+    DB[("PostgreSQL")]
+    Card[":8001"]
+    NB[":8002"]
+    UPI[":8003"]
+    Dash --> API
+    App --> API
+    Biz --> DB
+    Adapters --> Card
+    Adapters --> NB
+    Adapters --> UPI
+```
+
+**How the design is approached.**
+
+1. **Two credentials, different powers.** A JWT (the merchant in a browser) can settle, pay
+   out and refund, but cannot create a payment. An API key (the merchant's server) can take
+   payments, but cannot move money out. A leaked key cannot drain a wallet.
+2. **One rail interface.** Every rail implements `create` and `fetch` and returns a
+   `RailResult`. Card (sync), UPI (poll) and netbanking (redirect) look the same to the
+   business code. Adding a rail is one adapter.
+3. **One writer for money.** `payments/wallet.py` is the only code that changes a balance.
+   Every change writes a `LedgerEntry` under a row lock. Tests recompute the wallet from the
+   ledger and check they match.
+4. **Credit exactly once.** `apply_outcome` locks the transaction row and uses `credited_at`
+   as the already-paid marker, so a poll, a retry and a crash cannot credit twice.
+5. **Integer paise inside, rupee strings at the edge.** Floats never touch money.
+
+Settlement, payouts and refunds happen **inside the gateway**. The rails have no payout or
+refund endpoint; those outcomes are decided by the gateway's own mock processors.
+
+The credentials, the rail adapters, the money model, the refund pipeline and the known gaps
+(no webhooks, a crash window on create) are in [HIGH_LEVEL_DESIGN.md](HIGH_LEVEL_DESIGN.md).
 
 ## Run
 
