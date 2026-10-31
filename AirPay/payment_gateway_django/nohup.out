@@ -1456,3 +1456,167 @@ Bad Request: /api/v1/transactions
 [25/Oct/2026 13:55:23] "GET /api/v1/customers/me/transactions/d16a3b74-3b55-4575-8bb7-a0f5d383ddce/refunds HTTP/1.1" 200 518
 [25/Oct/2026 13:55:53] "GET /api/v1/health HTTP/1.1" 200 58
 [25/Oct/2026 13:56:23] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:56:53] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:57:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:58:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 13:59:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:00:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:01:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:02:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:03:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:04:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:05:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:06:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:07:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:08:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:09:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:10:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:11:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:12:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:13:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:14:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:15:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:16:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:17:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:18:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:19:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:20:26] "GET /api/v1/health HTTP/1.1" 200 58
+[25/Oct/2026 14:21:26] "GET /api/v1/health HTTP/1.1" 200 58
+Service Unavailable: /api/v1/health
+[25/Oct/2026 14:22:26] "GET /api/v1/health HTTP/1.1" 503 76
+Service Unavailable: /api/v1/health
+[25/Oct/2026 14:23:26] "GET /api/v1/health HTTP/1.1" 503 76
+Service Unavailable: /api/v1/health
+[25/Oct/2026 14:24:26] "GET /api/v1/health HTTP/1.1" 503 76
+Service Unavailable: /api/v1/health
+[25/Oct/2026 14:25:26] "GET /api/v1/health HTTP/1.1" 503 76
+Service Unavailable: /api/v1/health
+[25/Oct/2026 14:26:26] "GET /api/v1/health HTTP/1.1" 503 76
+Service Unavailable: /api/v1/health
+[25/Oct/2026 14:27:26] "GET /api/v1/health HTTP/1.1" 503 76
+Service Unavailable: /api/v1/health
+[25/Oct/2026 14:28:26] "GET /api/v1/health HTTP/1.1" 503 76
+Service Unavailable: /api/v1/health
+[25/Oct/2026 14:29:26] "GET /api/v1/health HTTP/1.1" 503 76
+Service Unavailable: /api/v1/health
+[25/Oct/2026 14:30:26] "GET /api/v1/health HTTP/1.1" 503 76
+Service Unavailable: /api/v1/health
+[25/Oct/2026 14:31:26] "GET /api/v1/health HTTP/1.1" 503 76
+Internal Server Error: /api/v1/auth/refresh
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/base/base.py", line 279, in ensure_connection
+    self.connect()
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/base/base.py", line 256, in connect
+    self.connection = self.get_new_connection(conn_params)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/postgresql/base.py", line 345, in get_new_connection
+    connection = self.Database.connect(**conn_params)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/connection.py", line 134, in connect
+    raise new_ex.with_traceback(None)
+psycopg.OperationalError: connection failed: connection to server at "127.0.0.1", port 5432 failed: could not receive data from server: Connection refused
+Multiple connection attempts failed. All failures were:
+- host: 'localhost', port: '5432', hostaddr: '::1': connection failed: connection to server at "::1", port 5432 failed: could not receive data from server: Connection refused
+- host: 'localhost', port: '5432', hostaddr: '127.0.0.1': connection failed: connection to server at "127.0.0.1", port 5432 failed: could not receive data from server: Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 64, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 526, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 474, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 485, in raise_uncaught_exception
+    raise exc
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/views.py", line 523, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/customers/views.py", line 120, in post
+    return super().post(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework_simplejwt/views.py", line 46, in post
+    serializer.is_valid(raise_exception=True)
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 225, in is_valid
+    self._validated_data = self.run_validation(self.initial_data)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework/serializers.py", line 459, in run_validation
+    value = self.validate(value)
+            ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework_simplejwt/serializers.py", line 112, in validate
+    refresh = self.token_class(attrs["refresh"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework_simplejwt/tokens.py", line 72, in __init__
+    self.verify()
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework_simplejwt/tokens.py", line 268, in verify
+    self.check_blacklist()
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/rest_framework_simplejwt/tokens.py", line 279, in check_blacklist
+    if BlacklistedToken.objects.filter(token__jti=jti).exists():
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 1483, in exists
+    return self.query.has_results(using=self.db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/sql/query.py", line 686, in has_results
+    return compiler.has_results()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1611, in has_results
+    return bool(self.execute_sql(SINGLE))
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1641, in execute_sql
+    cursor = self.connection.cursor()
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/base/base.py", line 320, in cursor
+    return self._cursor()
+           ^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/base/base.py", line 296, in _cursor
+    self.ensure_connection()
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/base/base.py", line 278, in ensure_connection
+    with self.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/base/base.py", line 279, in ensure_connection
+    self.connect()
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/base/base.py", line 256, in connect
+    self.connection = self.get_new_connection(conn_params)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/django/db/backends/postgresql/base.py", line 345, in get_new_connection
+    connection = self.Database.connect(**conn_params)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shantanu/B/AirTribe/PythonC22/AirPay/payment_gateway_django/.venv/lib/python3.12/site-packages/psycopg/connection.py", line 134, in connect
+    raise new_ex.with_traceback(None)
+django.db.utils.OperationalError: connection failed: connection to server at "127.0.0.1", port 5432 failed: could not receive data from server: Connection refused
+Multiple connection attempts failed. All failures were:
+- host: 'localhost', port: '5432', hostaddr: '::1': connection failed: connection to server at "::1", port 5432 failed: could not receive data from server: Connection refused
+- host: 'localhost', port: '5432', hostaddr: '127.0.0.1': connection failed: connection to server at "127.0.0.1", port 5432 failed: could not receive data from server: Connection refused
+[25/Oct/2026 14:31:51] "POST /api/v1/auth/refresh HTTP/1.1" 500 247805

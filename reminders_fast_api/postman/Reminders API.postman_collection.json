@@ -1,0 +1,550 @@
+{
+  "info": {
+    "name": "Reminders API",
+    "description": "Import this collection and Reminders Local.postman_environment.json.\n\n1. Select the Reminders Local environment.\n2. Set email and password there. The password value in the file is empty on purpose.\n3. Start the API: uvicorn app:app --reload\n4. Send the requests from top to bottom.\n\nLogin and Refresh token save access_token and refresh_token. Create user saves user_id. Create reminder saves reminder_id. Protected requests send Authorization: Bearer {{access_token}}. Run Delete user last.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000"
+    },
+    {
+      "key": "email",
+      "value": "you@example.com"
+    },
+    {
+      "key": "password",
+      "value": ""
+    },
+    {
+      "key": "access_token",
+      "value": ""
+    },
+    {
+      "key": "refresh_token",
+      "value": ""
+    },
+    {
+      "key": "user_id",
+      "value": ""
+    },
+    {
+      "key": "reminder_id",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Get root",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/",
+            "description": "Public health check.",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"returns a greeting\", function () {",
+                  "    pm.expect(pm.response.json()).to.have.property(\"message\", \"Hello, World!\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Create user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/users/",
+            "description": "Registers a user and saves id as user_id. Returns 400 if the email is already registered.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test(\"returns the user without the password hash\", function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body).to.include.keys(\"id\", \"email\", \"created_at\", \"updated_at\");",
+                  "    pm.expect(body.email).to.eql(pm.variables.get(\"email\"));",
+                  "    pm.expect(body).to.not.have.property(\"hashed_password\");",
+                  "    pm.collectionVariables.set(\"user_id\", String(body.id));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/users/login",
+            "description": "Returns an access token and a refresh token and saves both.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"returns access and refresh tokens\", function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body.token_type).to.eql(\"bearer\");",
+                  "    pm.expect(body.access_token).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(body.refresh_token).to.be.a(\"string\").and.not.empty;",
+                  "    pm.collectionVariables.set(\"access_token\", body.access_token);",
+                  "    pm.collectionVariables.set(\"refresh_token\", body.refresh_token);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Refresh token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/users/refresh",
+            "description": "Exchanges the refresh token for a new pair. An access token is rejected.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh_token\": \"{{refresh_token}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"returns a new token pair\", function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body.token_type).to.eql(\"bearer\");",
+                  "    pm.expect(body.access_token).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(body.refresh_token).to.be.a(\"string\").and.not.empty;",
+                  "    pm.collectionVariables.set(\"access_token\", body.access_token);",
+                  "    pm.collectionVariables.set(\"refresh_token\", body.refresh_token);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "List users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/users/?skip=0&limit=100",
+            "description": "Public list. skip and limit are optional.",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"returns a list\", function () {",
+                  "    pm.expect(pm.response.json()).to.be.an(\"array\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get current user",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/users/me",
+            "description": "Requires the access token. A refresh token is rejected."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"returns the signed-in user\", function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body.email).to.eql(pm.variables.get(\"email\"));",
+                  "    if (pm.collectionVariables.get(\"user_id\")) {",
+                  "        pm.expect(String(body.id)).to.eql(pm.collectionVariables.get(\"user_id\"));",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get user",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/users/{{user_id}}",
+            "description": "Requires the access token. Another user's id returns 403."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"returns that user\", function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(String(body.id)).to.eql(pm.collectionVariables.get(\"user_id\"));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update user",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/users/{{user_id}}",
+            "description": "Replaces email and password for the signed-in user. Sends the same values so later requests still match the environment.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"returns the updated user\", function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body.email).to.eql(pm.variables.get(\"email\"));",
+                  "    pm.expect(body).to.not.have.property(\"hashed_password\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Reminders",
+      "item": [
+        {
+          "name": "Create reminder",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/reminders/",
+            "description": "Creates a reminder for the signed-in user and saves reminder_id.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Pay rent\",\n  \"description\": \"Monthly\",\n  \"due_date\": \"2026-11-01T12:00:00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test(\"returns an incomplete reminder for the signed-in user\", function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body.title).to.eql(\"Pay rent\");",
+                  "    pm.expect(body.is_completed).to.eql(false);",
+                  "    pm.expect(String(body.user_id)).to.eql(pm.collectionVariables.get(\"user_id\"));",
+                  "    pm.collectionVariables.set(\"reminder_id\", String(body.id));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List reminders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/reminders/?skip=0&limit=100",
+            "description": "Lists reminders owned by the signed-in user."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"includes the created reminder\", function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body).to.be.an(\"array\");",
+                  "    const id = pm.collectionVariables.get(\"reminder_id\");",
+                  "    if (id) {",
+                  "        pm.expect(body.some((item) => String(item.id) === id)).to.eql(true);",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get reminder",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/reminders/{{reminder_id}}",
+            "description": "Returns one reminder owned by the signed-in user. Another user's reminder returns 404."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"returns that reminder\", function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(String(body.id)).to.eql(pm.collectionVariables.get(\"reminder_id\"));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update reminder",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/reminders/{{reminder_id}}",
+            "description": "Replaces the reminder fields.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Paid rent\",\n  \"description\": \"Done\",\n  \"due_date\": \"2026-11-01T12:00:00\",\n  \"is_completed\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"marks the reminder complete\", function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body.title).to.eql(\"Paid rent\");",
+                  "    pm.expect(body.is_completed).to.eql(true);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete reminder",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{base_url}}/reminders/{{reminder_id}}",
+            "description": "Deletes the signed-in user's reminder."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 204\", function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cleanup",
+      "item": [
+        {
+          "name": "Delete user",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{base_url}}/users/{{user_id}}",
+            "description": "Deletes the signed-in user. Run this last."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 204\", function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
